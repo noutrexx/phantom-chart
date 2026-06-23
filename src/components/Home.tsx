@@ -9,17 +9,12 @@ import {
   Bag,
   ChevronDown,
   Clock,
-  Compass,
   Heart,
-  HomeIcon,
   Pin,
-  Receipt,
   Search,
   Sliders,
   Star,
   Tag,
-  Trophy,
-  User,
   VolumeOff,
   VolumeOn,
   X,
@@ -64,6 +59,8 @@ export default function Home({
   savings,
   liveStreak,
   onOpen,
+  isFavorite,
+  onToggleFavorite,
   cartCount,
   subtotal,
   onCart,
@@ -71,6 +68,8 @@ export default function Home({
   savings: Savings;
   liveStreak: number;
   onOpen: (id: string) => void;
+  isFavorite: (id: string) => boolean;
+  onToggleFavorite: (id: string) => void;
   cartCount: number;
   subtotal: number;
   onCart: () => void;
@@ -240,7 +239,7 @@ export default function Home({
         </div>
         <div className="flex flex-col gap-6 stagger">
           {list.map((r, index) => (
-            <RestaurantCard key={r.id} r={r} rank={index + 1} onOpen={() => onOpen(r.id)} />
+            <RestaurantCard key={r.id} r={r} rank={index + 1} onOpen={() => onOpen(r.id)} fav={isFavorite(r.id)} onToggleFav={() => onToggleFavorite(r.id)} />
           ))}
           {list.length === 0 && (
             <div className="py-10 text-center">
@@ -251,7 +250,6 @@ export default function Home({
         </div>
       </div>
 
-      <BottomNav />
       {cartCount > 0 && <FloatingCart count={cartCount} subtotal={subtotal} onCart={onCart} />}
     </div>
   );
@@ -340,7 +338,7 @@ function DealCarousel() {
   );
 }
 
-function RestaurantCard({ r, rank, onOpen }: { r: Restaurant; rank: number; onOpen: () => void }) {
+function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; rank: number; onOpen: () => void; fav: boolean; onToggleFav: () => void }) {
   const deal = r.rating >= 4.8 ? "Spend $0, save everything" : "$0 delivery fee";
   const fast = r.etaMin < 21;
 
@@ -352,8 +350,16 @@ function RestaurantCard({ r, rank, onOpen }: { r: Restaurant; rank: number; onOp
         <span className="absolute top-3 left-3 bg-white text-[11.5px] font-extrabold rounded-full px-2.5 py-1.5 shadow-soft tabular-nums">
           #{rank} near you
         </span>
-        <span className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur grid place-items-center shadow-soft">
-          <Heart size={18} className="text-[var(--color-ink)]" />
+        <span
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFav();
+          }}
+          role="button"
+          aria-label={fav ? "Remove favorite" : "Save"}
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur grid place-items-center shadow-soft active:scale-90 transition cursor-pointer"
+        >
+          <Heart size={18} className={fav ? "text-[var(--color-red)] fill-current" : "text-[var(--color-ink)]"} />
         </span>
         <span className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white rounded-full pl-2 pr-3 py-1.5 shadow-soft">
           <Clock size={14} className="text-[var(--color-ink)]" />
@@ -440,32 +446,6 @@ function SavingsStrip({ savings, liveStreak }: { savings: Savings; liveStreak: n
           <div className="text-[10px] text-[var(--color-ink-3)] font-medium">streak</div>
         </div>
       )}
-    </div>
-  );
-}
-
-function BottomNav() {
-  const items = [
-    { label: "Home", icon: HomeIcon, active: true },
-    { label: "Browse", icon: Compass },
-    { label: "Rewards", icon: Trophy },
-    { label: "Orders", icon: Receipt },
-    { label: "Account", icon: User },
-  ];
-
-  return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-[430px] border-t border-[var(--color-line)] bg-[var(--color-bg)]/96 backdrop-blur px-3 pb-2 pt-2">
-      <div className="grid grid-cols-5">
-        {items.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button key={item.label} className={`h-12 flex flex-col items-center justify-center gap-0.5 ${item.active ? "text-[var(--color-ink)]" : "text-[var(--color-ink-3)]"}`}>
-              <Icon size={18} stroke={item.active ? 2.4 : 2} />
-              <span className="text-[10.5px] font-bold">{item.label}</span>
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }

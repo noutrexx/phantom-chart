@@ -24,7 +24,7 @@ export default function PrimaryButton({
     <button
       onClick={onClick}
       className={`rounded-[14px] font-bold tracking-tight active:scale-[0.98] transition shadow-soft ${look} ${pad} ${
-        full ? "w-full" : "px-6"
+        full ? "w-full px-5" : "px-6"
       } ${className}`}
     >
       {children}

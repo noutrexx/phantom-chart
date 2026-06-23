@@ -20,6 +20,8 @@ export default function RestaurantView({
   onAdd,
   onAddLine,
   onCart,
+  favorite,
+  onToggleFavorite,
 }: {
   restaurant: Restaurant;
   cart: CartLine[];
@@ -29,6 +31,8 @@ export default function RestaurantView({
   onAdd: (item: MenuItem) => void;
   onAddLine: (line: CartLine) => void;
   onCart: () => void;
+  favorite: boolean;
+  onToggleFavorite: () => void;
 }) {
   const [tab, setTab] = useState<"menu" | "reviews">("menu");
   const [popped, setPopped] = useState<string | null>(null);
@@ -56,23 +60,33 @@ export default function RestaurantView({
 
   return (
     <div className="h-full overflow-y-auto pb-28 bg-[var(--color-bg)]">
-      <div className="relative h-56">
-        <FoodImage src={foodImg(restaurant.photo, restaurant.id + "-hero", 860, 560)} alt={restaurant.name} className="absolute inset-0" gradient={restaurant.gradient} />
-        <button onClick={onBack} className="absolute top-3 left-4 w-10 h-10 rounded-full bg-white grid place-items-center shadow-card active:scale-90 transition">
+      <div className="relative px-5 pt-3">
+        <div className="relative h-52 overflow-hidden rounded-[22px] bg-[var(--color-soft)] shadow-soft">
+          <FoodImage src={foodImg(restaurant.photo, restaurant.id + "-hero", 860, 560)} alt={restaurant.name} className="absolute inset-0" gradient={restaurant.gradient} />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
+          <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
+            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold shadow-soft">Spend $0, save everything</span>
+            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold text-[var(--color-green-ink)] shadow-soft">Free delivery</span>
+          </div>
+        </div>
+        <button onClick={onBack} className="absolute top-6 left-8 w-10 h-10 rounded-full bg-white grid place-items-center shadow-card active:scale-90 transition">
           <ChevronLeft size={22} className="text-[var(--color-ink)]" />
         </button>
-        <button className="absolute top-3 right-4 w-10 h-10 rounded-full bg-white grid place-items-center shadow-card active:scale-90 transition">
-          <Heart size={20} className="text-[var(--color-ink)]" />
+        <button onClick={onToggleFavorite} aria-label={favorite ? "Remove favorite" : "Save"} className="absolute top-6 right-8 w-10 h-10 rounded-full bg-white grid place-items-center shadow-card active:scale-90 transition">
+          <Heart size={20} className={favorite ? "text-[var(--color-red)] fill-current" : "text-[var(--color-ink)]"} />
         </button>
-        <div className="absolute bottom-3 left-4 right-4 flex gap-2">
-          <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold shadow-soft">Spend $0, save everything</span>
-          <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold text-[var(--color-green-ink)] shadow-soft">Free delivery</span>
-        </div>
       </div>
 
-      <div className="px-5 pt-4">
-        <h1 className="text-[26px] font-extrabold tracking-tight leading-tight">{restaurant.name}</h1>
-        <p className="text-[14px] text-[var(--color-ink-2)] mt-1">{restaurant.blurb}</p>
+      <div className="mx-5 mt-4 rounded-[18px] border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-soft">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="text-[27px] font-extrabold tracking-tight leading-tight">{restaurant.name}</h1>
+            <p className="text-[14px] text-[var(--color-ink-2)] mt-1">{restaurant.blurb}</p>
+          </div>
+          <span className="shrink-0 rounded-full bg-[var(--color-green)]/10 px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--color-green-ink)]">
+            Open
+          </span>
+        </div>
         <div className="flex items-center gap-2 mt-3 text-[13px]">
           <span className="flex items-center gap-1 font-bold">
             <Star size={14} className="text-[var(--color-ink)]" /> {restaurant.rating}
@@ -83,14 +97,14 @@ export default function RestaurantView({
           <span className="text-[var(--color-ink-3)]">-</span>
           <span className="text-[var(--color-ink-2)]">{restaurant.priceLevel}</span>
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-2">
           <InfoPill label={`${restaurant.etaMin}-${restaurant.etaMin + 7} min`} sub="Delivery" />
           <InfoPill label="$0.00" sub="Fees" />
           <InfoPill label={`${restaurant.distanceKm} km`} sub="Away" />
         </div>
       </div>
 
-      <div className="sticky top-0 z-10 bg-[var(--color-bg)]/95 backdrop-blur border-b border-[var(--color-line)] mt-5">
+      <div className="sticky top-0 z-10 bg-[var(--color-bg)]/95 backdrop-blur border-b border-[var(--color-line)] mt-4">
         <div className="flex gap-6 px-5">
           {(["menu", "reviews"] as const).map((t) => (
             <button
@@ -129,14 +143,14 @@ export default function RestaurantView({
                   <p className="text-[12.5px] text-[var(--color-ink-3)]">High craving, zero checkout damage</p>
                 </div>
               </div>
-              <div className="mt-3 flex gap-3 overflow-x-auto hide-scroll px-5">
+              <div className="mt-3 flex gap-3 overflow-x-auto hide-scroll px-5 pb-1">
                 {popular.map((item) => (
-                  <button key={item.id} onClick={() => setSelected(item)} className="shrink-0 w-36 text-left active:scale-[0.98] transition">
-                    <div className="relative w-36 h-28 rounded-xl overflow-hidden shadow-soft">
+                  <button key={item.id} onClick={() => setSelected(item)} className="shrink-0 w-[136px] text-left active:scale-[0.98] transition">
+                    <div className="relative w-[136px] h-[108px] rounded-xl overflow-hidden shadow-soft">
                       <FoodImage src={foodImg(item.photo, `${item.id}-popular`, 260, 220)} alt={item.name} className="absolute inset-0" gradient={restaurant.gradient} />
                       <span className="absolute left-2 top-2 rounded-full bg-white px-2 py-1 text-[10.5px] font-extrabold">Popular</span>
                     </div>
-                    <p className="mt-2 text-[13px] font-bold leading-tight line-clamp-2">{item.name}</p>
+                    <p className="mt-2 text-[13px] font-bold leading-tight line-clamp-2 min-h-[32px]">{item.name}</p>
                     <p className="text-[12px] font-semibold text-[var(--color-ink-2)] tabular-nums">${item.price.toFixed(2)}</p>
                   </button>
                 ))}
@@ -420,8 +434,8 @@ function ProductSheet({
         </div>
         </div>
 
-        <div className="shrink-0 border-t border-[var(--color-line)] px-5 py-3 flex items-center gap-3">
-          <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1">
+        <div className="shrink-0 border-t border-[var(--color-line)] px-5 py-3 grid grid-cols-[126px_minmax(0,1fr)] items-center gap-3">
+          <div className="flex items-center justify-between gap-1 border border-[var(--color-line-2)] rounded-full p-1">
             <button onClick={() => setQty((value) => Math.max(1, value - 1))} className="w-9 h-9 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
               <Minus size={17} className="text-[var(--color-ink)]" />
             </button>
@@ -430,9 +444,9 @@ function ProductSheet({
               <Plus size={17} className="text-white" />
             </button>
           </div>
-          <PrimaryButton onClick={handleAdd} className="flex-1">
-            <span className="flex items-center justify-between w-full">
-              <span>Add to cart</span>
+          <PrimaryButton onClick={handleAdd} className="h-12 min-w-0 !py-0">
+            <span className="flex items-center justify-between w-full min-w-0 gap-3">
+              <span className="truncate">Add to cart</span>
               <span className="tabular-nums">${lineTotal.toFixed(2)}</span>
             </span>
           </PrimaryButton>
