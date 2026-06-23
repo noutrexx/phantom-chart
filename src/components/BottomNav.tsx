@@ -19,8 +19,8 @@ export default function BottomNav({
   badge?: number;
 }) {
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-[430px] border-t border-[var(--color-line)] bg-[var(--color-bg)]/96 backdrop-blur px-3 pb-2 pt-2">
-      <div className="grid grid-cols-4">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-[430px] px-4 pb-3 pt-2 pointer-events-none">
+      <div className="grid grid-cols-4 rounded-[18px] border border-[var(--color-line)] bg-[var(--color-bg)]/96 shadow-lift backdrop-blur pointer-events-auto">
         {ITEMS.map((item) => {
           const Icon = item.icon;
           const active = tab === item.key;
@@ -28,10 +28,11 @@ export default function BottomNav({
             <button
               key={item.key}
               onClick={() => onTab(item.key)}
-              className={`relative h-12 flex flex-col items-center justify-center gap-0.5 active:scale-95 transition ${
+              className={`relative h-14 flex flex-col items-center justify-center gap-0.5 active:scale-95 transition ${
                 active ? "text-[var(--color-ink)]" : "text-[var(--color-ink-3)]"
               }`}
             >
+              {active && <span className="absolute top-1.5 h-1 w-5 rounded-full bg-[var(--color-ink)]" />}
               <Icon size={18} stroke={active ? 2.4 : 2} />
               <span className="text-[10.5px] font-bold">{item.label}</span>
               {item.key === "orders" && badge ? (

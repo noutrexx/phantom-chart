@@ -1,6 +1,7 @@
 import FoodImage from "./FoodImage";
 import { foodImg } from "../lib/img";
 import { feedback } from "../lib/feedback";
+import { RESTAURANTS } from "../data";
 
 export default function Splash({ onEnter }: { onEnter: () => void }) {
   function enter() {
@@ -10,16 +11,19 @@ export default function Splash({ onEnter }: { onEnter: () => void }) {
 
   return (
     <div className="h-full relative bg-black overflow-hidden">
-      <FoodImage
-        src={foodImg("gourmet+food+spread", "splash-hero", 860, 1100)}
-        alt="Food"
-        className="absolute inset-0"
-        gradient="linear-gradient(160deg,#2a2a2e,#0b0b0c)"
-      />
+      <FoodImage src={foodImg(RESTAURANTS[2].photo, "splash-hero", 860, 1100)} alt="Food" className="absolute inset-0" gradient="linear-gradient(160deg,#2a2a2e,#0b0b0c)" />
       <div
         className="absolute inset-0"
         style={{ background: "linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.55) 70%,rgba(0,0,0,0.92) 100%)" }}
       />
+
+      <div className="absolute left-6 right-6 top-20 grid grid-cols-3 gap-2 opacity-90">
+        {RESTAURANTS.slice(0, 3).map((restaurant) => (
+          <div key={restaurant.id} className="h-20 overflow-hidden rounded-2xl border border-white/15 shadow-card">
+            <FoodImage src={foodImg(restaurant.photo, `${restaurant.id}-splash`, 180, 160)} alt={restaurant.name} className="h-full w-full" gradient={restaurant.gradient} />
+          </div>
+        ))}
+      </div>
 
       <div className="relative h-full flex flex-col justify-between px-6 pt-3 pb-8 text-white">
         <div className="fade-in">
