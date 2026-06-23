@@ -304,7 +304,9 @@ function Reveal({
             </div>
             <div className="flex items-center justify-between text-[12.5px] mt-1.5">
               <span className="text-[var(--color-ink-2)]">Night streak</span>
-              <span className="font-bold tabular-nums">{liveStreak > 0 ? `Fire ${liveStreak}` : "0"}</span>
+              <span className="font-bold tabular-nums">
+                {liveStreak > 0 ? `${liveStreak} night${liveStreak === 1 ? "" : "s"}` : "0 nights"}
+              </span>
             </div>
           </div>
 
