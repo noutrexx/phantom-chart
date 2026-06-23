@@ -175,6 +175,115 @@ const GROUPS: Record<string, OptionGroup[]> = {
       { id: "caramel", label: "Caramel syrup", delta: 0.5 },
     ]),
   ],
+  thai: [
+    single("spice", "Spice level", true, [
+      { id: "mild", label: "Mild", delta: 0 },
+      { id: "medium", label: "Medium", delta: 0 },
+      { id: "thai", label: "Thai hot 🔥", delta: 0 },
+    ]),
+    multi("addons", "Add-ons", [
+      { id: "peanuts", label: "Extra peanuts", delta: 0.75 },
+      { id: "egg", label: "Fried egg", delta: 1.25 },
+      { id: "shrimp", label: "Add shrimp", delta: 3.0 },
+      { id: "tofu", label: "Add tofu", delta: 2.0 },
+    ]),
+  ],
+  chinese: [
+    single("rice", "Base", true, [
+      { id: "steamed", label: "Steamed rice", delta: 0 },
+      { id: "fried", label: "Fried rice", delta: 1.5 },
+      { id: "noodles", label: "Noodles", delta: 1.5 },
+    ]),
+    multi("addons", "Add-ons", [
+      { id: "spicy", label: "Make it spicy", delta: 0 },
+      { id: "egg", label: "Extra egg", delta: 1.0 },
+      { id: "veg", label: "Extra veg", delta: 1.25 },
+      { id: "protein", label: "Extra protein", delta: 3.0 },
+    ]),
+  ],
+  mediterranean: [
+    single("sauce", "Sauce", true, [
+      { id: "garlic", label: "Garlic toum", delta: 0 },
+      { id: "tahini", label: "Tahini", delta: 0 },
+      { id: "hot", label: "Hot sauce", delta: 0 },
+    ]),
+    multi("addons", "Add-ons", [
+      { id: "falafel", label: "Extra falafel", delta: 1.5 },
+      { id: "feta", label: "Feta", delta: 1.25 },
+      { id: "olives", label: "Kalamata olives", delta: 1.0 },
+      { id: "fries", label: "Side of fries", delta: 2.5 },
+    ]),
+  ],
+  bbq: [
+    single("sauce", "Sauce", true, [
+      { id: "classic", label: "Classic", delta: 0 },
+      { id: "spicy", label: "Spicy", delta: 0 },
+      { id: "carolina", label: "Carolina gold", delta: 0 },
+    ]),
+    multi("sides", "Extra sides", [
+      { id: "slaw", label: "Coleslaw", delta: 2.0 },
+      { id: "cornbread", label: "Cornbread", delta: 2.25 },
+      { id: "mac", label: "Mac & cheese", delta: 3.0 },
+      { id: "beans", label: "Smoked beans", delta: 2.5 },
+    ]),
+  ],
+  seafood: [
+    single("prep", "Preparation", true, [
+      { id: "fried", label: "Fried", delta: 0 },
+      { id: "grilled", label: "Grilled", delta: 0 },
+    ]),
+    multi("addons", "Add-ons", [
+      { id: "tartar", label: "Extra tartar", delta: 0.75 },
+      { id: "lemon", label: "Lemon butter", delta: 1.0 },
+      { id: "cajun", label: "Cajun dusting", delta: 0.5 },
+      { id: "fries", label: "Side of fries", delta: 2.5 },
+    ]),
+  ],
+  breakfast: [
+    single("eggs", "Eggs", true, [
+      { id: "scrambled", label: "Scrambled", delta: 0 },
+      { id: "poached", label: "Poached", delta: 0 },
+      { id: "fried", label: "Fried", delta: 0 },
+    ]),
+    multi("addons", "Add-ons", [
+      { id: "bacon", label: "Smoked bacon", delta: 2.0 },
+      { id: "avocado", label: "Avocado", delta: 1.5 },
+      { id: "extraegg", label: "Extra egg", delta: 1.25 },
+      { id: "maple", label: "Extra maple", delta: 0.5 },
+    ]),
+  ],
+  steak: [
+    single("doneness", "Doneness", true, [
+      { id: "rare", label: "Rare", delta: 0 },
+      { id: "medrare", label: "Medium rare", delta: 0 },
+      { id: "medium", label: "Medium", delta: 0 },
+      { id: "well", label: "Well done", delta: 0 },
+    ]),
+    multi("sides", "Sides", [
+      { id: "fries", label: "Fries", delta: 0 },
+      { id: "mash", label: "Mashed potato", delta: 1.0 },
+      { id: "veg", label: "Grilled veg", delta: 1.5 },
+      { id: "shrimp", label: "Add garlic shrimp", delta: 5.0 },
+    ]),
+  ],
+  boba: [
+    single("sweet", "Sweetness", true, [
+      { id: "0", label: "0%", delta: 0 },
+      { id: "50", label: "50%", delta: 0 },
+      { id: "100", label: "100%", delta: 0 },
+    ]),
+    single("ice", "Ice", true, [
+      { id: "regular", label: "Regular ice", delta: 0 },
+      { id: "less", label: "Less ice", delta: 0 },
+      { id: "none", label: "No ice", delta: 0 },
+    ]),
+    multi("toppings", "Toppings", [
+      { id: "boba", label: "Extra boba", delta: 0.75 },
+      { id: "pudding", label: "Egg pudding", delta: 0.75 },
+      { id: "jelly", label: "Grass jelly", delta: 0.75 },
+      { id: "cream", label: "Cheese foam", delta: 1.25 },
+    ]),
+  ],
 };
 
 const DEFAULT_GROUPS: OptionGroup[] = [
