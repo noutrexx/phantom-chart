@@ -1,4 +1,4 @@
-// Lightweight sound + haptic feedback. Zero assets — synthesized via Web Audio.
+// Lightweight sound + haptic feedback. Zero assets - synthesized via Web Audio.
 // Respects a persisted mute flag and prefers-reduced-motion.
 
 const MUTE_KEY = "pc.muted";

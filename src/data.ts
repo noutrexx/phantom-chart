@@ -246,7 +246,7 @@ export const RESTAURANTS: Restaurant[] = [
       {
         title: "Sides & sips",
         items: [
-          { id: "pr3", name: "Grilled Pork Banh Mi", desc: "Lemongrass pork, pâté, pickled veg, baguette", price: 8.95, emoji: "🥖", photo: P.banhmi, popular: true },
+          { id: "pr3", name: "Grilled Pork Banh Mi", desc: "Lemongrass pork, pate, pickled veg, baguette", price: 8.95, emoji: "🥖", photo: P.banhmi, popular: true },
           { id: "pr4", name: "Crispy Spring Rolls (4)", desc: "Shrimp & pork, nuoc cham dip", price: 6.5, emoji: "🥟", photo: P.springrolls },
           { id: "pr5", name: "Vietnamese Iced Coffee", desc: "Robusta, condensed milk, over ice", price: 4.75, emoji: "🧊", photo: P.coldbrew },
         ],
@@ -276,7 +276,7 @@ export const RESTAURANTS: Restaurant[] = [
         title: "Sets & rolls",
         items: [
           { id: "ds1", name: "Drifter's Omakase (12pc)", desc: "Chef-selected nigiri, daily catch", price: 27.5, emoji: "🍣", photo: P.nigiri, tag: "Premium", popular: true },
-          { id: "ds2", name: "Salmon Trio", desc: "Nigiri, aburi, and ikura — pink everywhere", price: 15.95, emoji: "🍥", photo: P.salmon, popular: true },
+          { id: "ds2", name: "Salmon Trio", desc: "Nigiri, aburi, and ikura - pink everywhere", price: 15.95, emoji: "🍥", photo: P.salmon, popular: true },
           { id: "ds3", name: "Dragon Roll", desc: "Eel, avocado, cucumber, unagi glaze", price: 14.5, emoji: "🐉", photo: P.dragonroll },
           { id: "ds4", name: "Spicy Tuna Roll", desc: "Tuna, chili mayo, scallion, tempura crunch", price: 11.25, emoji: "🍣", photo: P.sushi },
         ],

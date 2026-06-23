@@ -197,9 +197,9 @@ function MapArt({ progress }: { progress: number }) {
 
 const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string }> = {
   normal: { emoji: "🫧", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
-  early: { emoji: "⚡", title: "Nothing arrived — early.", line: "Record time for a delivery that was never coming." },
+  early: { emoji: "⚡", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
   lost: { emoji: "🌫️", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
-  gift: { emoji: "🍮", title: "Nothing arrived — plus a free dessert.", line: "Two things that don't exist. Twice the comfort." },
+  gift: { emoji: "🍮", title: "Nothing arrived - plus a free dessert.", line: "Two things that don't exist. Twice the comfort." },
 };
 
 function Reveal({
@@ -231,7 +231,7 @@ function Reveal({
           <div className="text-[72px] leading-none">{copy.emoji}</div>
           <h2 className="mt-5 text-[25px] font-extrabold tracking-tight leading-tight">{copy.title}</h2>
           <p className="mt-2.5 text-[14.5px] text-[var(--color-ink-2)] leading-relaxed">
-            {copy.line} The craving from {restaurant.name} is gone — and you spent{" "}
+            {copy.line} The craving from {restaurant.name} is gone - and you spent{" "}
             <span className="text-[var(--color-green-ink)] font-bold">$0.00</span>.
           </p>
 
@@ -252,7 +252,7 @@ function Reveal({
           <div className="mt-6 flex flex-col gap-2.5">
             <PrimaryButton onClick={onAgain}>Order something else</PrimaryButton>
             <button onClick={onAgain} className="text-[13.5px] font-semibold text-[var(--color-ink-2)] py-2">
-              I'm good — take a breath
+              I'm good - take a breath
             </button>
           </div>
         </div>

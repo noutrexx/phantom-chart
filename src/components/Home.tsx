@@ -119,7 +119,7 @@ function RestaurantCard({ r, onOpen }: { r: Restaurant; onOpen: () => void }) {
         </span>
         <span className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white rounded-full pl-2 pr-3 py-1.5 shadow-soft">
           <Clock size={14} className="text-[var(--color-ink)]" />
-          <span className="text-[12.5px] font-bold tracking-tight">{r.etaMin}–{r.etaMin + 7} min</span>
+          <span className="text-[12.5px] font-bold tracking-tight">{r.etaMin}-{r.etaMin + 7} min</span>
         </span>
         <span className="absolute bottom-3 right-3 bg-[var(--color-green)] text-white text-[11.5px] font-bold rounded-full px-2.5 py-1.5">
           Free delivery

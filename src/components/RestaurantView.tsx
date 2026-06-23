@@ -64,7 +64,7 @@ export default function RestaurantView({
         </div>
         <div className="mt-3 flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3.5 py-2.5">
           <Clock size={17} className="text-[var(--color-ink)]" />
-          <span className="text-[13.5px] font-semibold">{restaurant.etaMin}–{restaurant.etaMin + 7} min</span>
+          <span className="text-[13.5px] font-semibold">{restaurant.etaMin}-{restaurant.etaMin + 7} min</span>
           <span className="text-[var(--color-ink-3)] text-[13px]">·</span>
           <span className="text-[13.5px] font-semibold text-[var(--color-green-ink)]">Free delivery</span>
         </div>

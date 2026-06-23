@@ -1,10 +1,10 @@
-# Phantom Cart 🛒
+# Phantom Eats
 
-A **dopamine site** — order the feeling, never the food.
+A dopamine site: order the feeling, never the food.
 
-Inspired by the South Korean "도파민 사이트" trend, Phantom Cart is a fake food‑delivery
-app where you go through the entire ritual — browse menus, read reviews, fill a cart,
-"place" an order, and watch a courier ride toward your couch on a live map — except
+Inspired by the South Korean dopamine-site trend, Phantom Eats is a fake food-delivery
+app where you go through the entire ritual: browse menus, read reviews, fill a cart,
+"place" an order, and watch a courier ride toward your couch on a live map, except
 nothing is ever actually ordered. No payments, no account, no bill. The journey *is*
 the product, and your wallet stays full.
 
@@ -12,11 +12,11 @@ the product, and your wallet stays full.
 
 ## Features
 
-- **Full fake-delivery funnel** — Splash → Home → Restaurant (menu/reviews) → Cart → Tracking → Reveal
+- **Full fake-delivery funnel**: Splash -> Home -> Restaurant (menu/reviews) -> Cart -> Tracking -> Reveal
 - **"You will pay $0.00"** checkout gag with a satisfying, frictionless flow
-- **Savings wallet + night streak** — persists how much money & calories you "saved" by not ordering (localStorage)
-- **Sound + haptics** — synthesized Web Audio feedback and vibration, with a mute toggle (respects `prefers-reduced-motion`)
-- **Variable courier outcomes** — the ride randomly resolves as normal / early / lost / a surprise free dessert, so it never feels the same twice
+- **Savings wallet + night streak**: persists how much money & calories you "saved" by not ordering (localStorage)
+- **Sound + haptics**: synthesized Web Audio feedback and vibration, with a mute toggle (respects `prefers-reduced-motion`)
+- **Variable courier outcomes**: the ride randomly resolves as normal / early / lost / a surprise free dessert, so it never feels the same twice
 - **Mobile-first** phone-frame UI, zero image assets (emoji-based)
 
 ## Tech
