@@ -1,0 +1,17 @@
+{
+  "name": "Phantom Eats",
+  "short_name": "Phantom Eats",
+  "description": "A dopamine food-delivery simulation with zero real orders and zero payments.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
