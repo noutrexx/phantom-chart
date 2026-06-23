@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { Restaurant } from "../types";
 import type { Savings } from "../hooks/useSavings";
 import PrimaryButton from "./PrimaryButton";
@@ -225,7 +226,8 @@ function Reveal({
   const copy = REVEAL_COPY[outcome];
 
   return (
-    <div className="h-full flex flex-col items-center justify-center text-center px-7 bg-[var(--color-bg)]">
+    <div className="h-full flex flex-col items-center justify-center text-center px-7 bg-[var(--color-bg)] relative overflow-hidden">
+      {show && <ConfettiBurst />}
       {show && (
         <div className="fade-up w-full max-w-[20rem]">
           <div className="text-[72px] leading-none">{copy.emoji}</div>
@@ -249,6 +251,14 @@ function Reveal({
             </div>
           </div>
 
+          <div className="mt-3 rounded-2xl bg-[var(--color-ink)] text-white p-4 text-left shadow-lift">
+            <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Achievement unlocked</p>
+            <p className="mt-1 text-[15px] font-extrabold">Zero Dollar Hero</p>
+            <p className="mt-1 text-[12.5px] text-white/70">
+              You completed the full order ritual and kept every dollar.
+            </p>
+          </div>
+
           <div className="mt-6 flex flex-col gap-2.5">
             <PrimaryButton onClick={onAgain}>Order something else</PrimaryButton>
             <button onClick={onAgain} className="text-[13.5px] font-semibold text-[var(--color-ink-2)] py-2">
@@ -257,6 +267,26 @@ function Reveal({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ConfettiBurst() {
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      {Array.from({ length: 14 }).map((_, i) => (
+        <span
+          key={i}
+          className="confetti-piece"
+          style={
+            {
+              left: `${8 + ((i * 7) % 84)}%`,
+              animationDelay: `${i * 0.045}s`,
+              background: i % 3 === 0 ? "var(--color-green)" : i % 3 === 1 ? "var(--color-amber)" : "var(--color-red)",
+            } as CSSProperties
+          }
+        />
+      ))}
     </div>
   );
 }

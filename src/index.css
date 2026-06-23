@@ -159,6 +159,20 @@
   animation: shimmer 1.4s ease infinite;
 }
 
+@keyframes confettiFall {
+  0% { opacity: 0; transform: translateY(-40px) rotate(0deg); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(360px) rotate(240deg); }
+}
+.confetti-piece {
+  position: absolute;
+  top: 4%;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confettiFall 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .stagger > * { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
 .stagger > *:nth-child(1) { animation-delay: 0.03s; }
 .stagger > *:nth-child(2) { animation-delay: 0.08s; }

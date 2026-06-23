@@ -52,6 +52,14 @@ const DEALS = [
   },
 ];
 
+const COUPONS = ["ZEROHERO", "NOBILL", "CARTZEN", "SKIP100"];
+
+const BADGES = [
+  { label: "Zero Dollar Hero", need: 1 },
+  { label: "Cart Master", need: 3 },
+  { label: "Late Night Saver", need: 5 },
+];
+
 export default function Home({
   savings,
   liveStreak,
@@ -71,6 +79,7 @@ export default function Home({
   const [query, setQuery] = useState("");
   const [activeFilters, setActiveFilters] = useState<FilterKey[]>([]);
   const [muted, setMutedState] = useState(isMuted());
+  const [coupon, setCoupon] = useState(COUPONS[0]);
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -106,6 +115,14 @@ export default function Home({
   function toggleFilter(key: FilterKey) {
     feedback.tap();
     setActiveFilters((current) => (current.includes(key) ? current.filter((item) => item !== key) : [...current, key]));
+  }
+
+  function spinCoupon() {
+    feedback.surprise();
+    setCoupon((current) => {
+      const index = COUPONS.indexOf(current);
+      return COUPONS[(index + 1) % COUPONS.length];
+    });
   }
 
   const heading = query.trim()
@@ -207,6 +224,10 @@ export default function Home({
         <SavingsStrip savings={savings} liveStreak={liveStreak} />
       </div>
 
+      <div className="px-5 mt-3">
+        <RewardPanel savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} />
+      </div>
+
       <div className="px-5 mt-5">
         <div className="flex items-end justify-between gap-3 mb-3">
           <div>
@@ -232,6 +253,69 @@ export default function Home({
 
       <BottomNav />
       {cartCount > 0 && <FloatingCart count={cartCount} subtotal={subtotal} onCart={onCart} />}
+    </div>
+  );
+}
+
+function RewardPanel({
+  savings,
+  liveStreak,
+  coupon,
+  onSpin,
+}: {
+  savings: Savings;
+  liveStreak: number;
+  coupon: string;
+  onSpin: () => void;
+}) {
+  const missionDone = savings.lastOrderDate === new Date().toISOString().slice(0, 10);
+  const nextBadge = BADGES.find((badge) => savings.orders < badge.need) ?? BADGES[BADGES.length - 1];
+  const progress = Math.min(1, savings.orders / nextBadge.need);
+
+  return (
+    <div className="rounded-xl bg-[var(--color-ink)] text-white p-4 shadow-lift">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Reward loop</p>
+          <h2 className="mt-1 text-[20px] font-extrabold tracking-tight">Craving defeated</h2>
+          <p className="mt-1 text-[12.5px] text-white/70">
+            {missionDone ? "Daily mission complete. Come back tomorrow for the next save." : "Place one phantom order today to lock the mission."}
+          </p>
+        </div>
+        <div className="text-right shrink-0">
+          <p className="text-[22px] font-extrabold tabular-nums leading-none">{liveStreak}</p>
+          <p className="text-[10.5px] text-white/55 font-bold">streak</p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        {BADGES.map((badge) => {
+          const earned = savings.orders >= badge.need;
+          return (
+            <div key={badge.label} className={`rounded-xl px-2.5 py-3 ${earned ? "bg-white text-[var(--color-ink)]" : "bg-white/10 text-white/68"}`}>
+              <p className="text-[11px] font-extrabold leading-tight">{badge.label}</p>
+              <p className="mt-1 text-[10.5px] font-bold tabular-nums">{earned ? "Earned" : `${Math.max(0, badge.need - savings.orders)} left`}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-[11.5px] font-bold text-white/64">
+          <span>Next badge</span>
+          <span className="tabular-nums">
+            {savings.orders}/{nextBadge.need}
+          </span>
+        </div>
+        <div className="mt-2 h-2 rounded-full bg-white/12 overflow-hidden">
+          <div className="h-full rounded-full bg-[var(--color-green)] transition-[width] duration-300" style={{ width: `${progress * 100}%` }} />
+        </div>
+      </div>
+
+      <button onClick={onSpin} className="mt-4 w-full rounded-xl bg-white text-[var(--color-ink)] px-4 py-3 flex items-center justify-between active:scale-[0.98] transition">
+        <span className="text-[13px] font-extrabold">Spin fake coupon</span>
+        <span className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-[12px] font-extrabold tracking-wide">{coupon}</span>
+      </button>
     </div>
   );
 }
