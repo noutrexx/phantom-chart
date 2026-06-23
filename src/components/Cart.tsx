@@ -35,10 +35,11 @@ export default function Cart({
         <button onClick={onBack} className="w-9 h-9 -ml-1 rounded-full grid place-items-center active:bg-[var(--color-soft)] transition">
           <ChevronLeft size={24} className="text-[var(--color-ink)]" />
         </button>
-        <div>
+        <div className="flex-1 min-w-0">
           <h1 className="text-[18px] font-extrabold tracking-tight">Your order</h1>
           {!empty && <p className="text-[12px] text-[var(--color-ink-3)] tabular-nums">{itemCount} item{itemCount === 1 ? "" : "s"} ready to not ship</p>}
         </div>
+        {!empty && <span className="rounded-full bg-[var(--color-green)]/10 px-3 py-1.5 text-[12px] font-extrabold text-[var(--color-green-ink)]">$0 due</span>}
       </div>
 
       {empty ? (
@@ -76,7 +77,6 @@ export default function Cart({
 
             <PriorityCard priority={priority} onToggle={() => setPriority((value) => !value)} />
             <PromoCard promo={promo} onPromo={setPromo} />
-            <PaymentCard />
             <SavingsCard subtotal={subtotal} priority={priority} />
             <SummaryCard subtotal={subtotal} almostSpent={almostSpent} priority={priority} promo={promo} />
           </div>
@@ -199,19 +199,6 @@ function PromoCard({ promo, onPromo }: { promo: string; onPromo: (value: string)
         <button className="h-11 px-4 rounded-xl bg-[var(--color-soft)] text-[13px] font-extrabold active:scale-95 transition">Apply</button>
       </div>
       <p className="mt-2 text-[12px] text-[var(--color-ink-3)]">Every code works emotionally. The total stays $0.</p>
-    </div>
-  );
-}
-
-function PaymentCard() {
-  return (
-    <div className="mt-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-soft p-4 flex items-center gap-3">
-      <div className="w-10 h-10 rounded-xl bg-[var(--color-ink)] text-white grid place-items-center text-[14px] font-extrabold">$0</div>
-      <div className="flex-1 min-w-0">
-        <p className="text-[14px] font-extrabold tracking-tight">No card needed</p>
-        <p className="text-[12.5px] text-[var(--color-ink-2)] mt-0.5">Phantom Pay declines the purchase before your bank can.</p>
-      </div>
-      <Check size={18} className="text-[var(--color-green-ink)]" />
     </div>
   );
 }

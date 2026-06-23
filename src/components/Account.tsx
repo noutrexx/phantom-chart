@@ -41,7 +41,7 @@ export default function Account({
 
       <div className="px-5 mt-3 grid grid-cols-2 gap-2">
         <StatCard value={`$${savings.totalSaved.toFixed(2)}`} label="Total saved" />
-        <StatCard value={savings.totalKcal.toLocaleString()} label="kcal avoided" />
+        <StatCard value={savings.totalKcal.toLocaleString("en-US")} label="kcal avoided" />
         <StatCard value={String(savings.orders)} label="Phantom orders" />
         <StatCard value={`${liveStreak}x`} label="Night streak" />
       </div>

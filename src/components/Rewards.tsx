@@ -36,7 +36,7 @@ export default function Rewards({ savings, liveStreak }: { savings: Savings; liv
           <p className="text-[11px] font-extrabold tracking-[0.18em] uppercase text-white/55">Total saved</p>
           <p className="mt-1 text-[40px] font-extrabold tabular-nums leading-none">${savings.totalSaved.toFixed(2)}</p>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-            <Stat value={savings.totalKcal.toLocaleString()} label="kcal avoided" />
+            <Stat value={savings.totalKcal.toLocaleString("en-US")} label="kcal avoided" />
             <Stat value={String(savings.orders)} label="orders" />
             <Stat value={`${liveStreak}x`} label="streak" />
           </div>
