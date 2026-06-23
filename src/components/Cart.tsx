@@ -69,7 +69,7 @@ export default function Cart({
               </div>
               <div className="px-4">
                 {cart.map((line) => (
-                  <CartLineRow key={line.item.id} line={line} onQty={onQty} />
+                  <CartLineRow key={line.lineId} line={line} onQty={onQty} />
                 ))}
               </div>
             </div>
@@ -148,14 +148,18 @@ function CartLineRow({ line, onQty }: { line: CartLine; onQty: (id: string, delt
       <FoodImage src={foodImg(line.item.photo, line.item.id, 140, 140)} alt={line.item.name} className="w-14 h-14 rounded-xl shrink-0" />
       <div className="flex-1 min-w-0">
         <h4 className="text-[14.5px] font-bold tracking-tight truncate">{line.item.name}</h4>
-        <p className="text-[13.5px] font-semibold text-[var(--color-ink-2)] mt-0.5 tabular-nums">${(line.item.price * line.qty).toFixed(2)}</p>
+        {line.selections && line.selections.length > 0 && (
+          <p className="text-[12px] text-[var(--color-ink-3)] mt-0.5 truncate">{line.selections.join(", ")}</p>
+        )}
+        {line.note && <p className="text-[12px] text-[var(--color-ink-3)] italic truncate">“{line.note}”</p>}
+        <p className="text-[13.5px] font-semibold text-[var(--color-ink-2)] mt-0.5 tabular-nums">${(line.unitPrice * line.qty).toFixed(2)}</p>
       </div>
-      <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1">
-        <button onClick={() => onQty(line.item.id, -1)} className="w-7 h-7 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
+      <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1 self-start">
+        <button onClick={() => onQty(line.lineId, -1)} className="w-7 h-7 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
           <Minus size={16} className="text-[var(--color-ink)]" />
         </button>
         <span className="w-5 text-center text-[14px] font-bold tabular-nums">{line.qty}</span>
-        <button onClick={() => onQty(line.item.id, 1)} className="w-7 h-7 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
+        <button onClick={() => onQty(line.lineId, 1)} className="w-7 h-7 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
           <Plus size={16} className="text-white" />
         </button>
       </div>

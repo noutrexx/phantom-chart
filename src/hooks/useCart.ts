@@ -2,24 +2,24 @@ import { useMemo, useReducer } from "react";
 import type { CartLine, MenuItem } from "../types";
 
 type Action =
-  | { type: "add"; item: MenuItem }
-  | { type: "setQty"; id: string; delta: number }
+  | { type: "addLine"; line: CartLine }
+  | { type: "setQty"; lineId: string; delta: number }
   | { type: "clear" };
 
 function reducer(state: CartLine[], action: Action): CartLine[] {
   switch (action.type) {
-    case "add": {
-      const found = state.find((l) => l.item.id === action.item.id);
+    case "addLine": {
+      const found = state.find((l) => l.lineId === action.line.lineId);
       if (found) {
         return state.map((l) =>
-          l.item.id === action.item.id ? { ...l, qty: l.qty + 1 } : l
+          l.lineId === action.line.lineId ? { ...l, qty: l.qty + action.line.qty } : l
         );
       }
-      return [...state, { item: action.item, qty: 1 }];
+      return [...state, action.line];
     }
     case "setQty":
       return state
-        .map((l) => (l.item.id === action.id ? { ...l, qty: l.qty + action.delta } : l))
+        .map((l) => (l.lineId === action.lineId ? { ...l, qty: l.qty + action.delta } : l))
         .filter((l) => l.qty > 0);
     case "clear":
       return [];
@@ -28,13 +28,17 @@ function reducer(state: CartLine[], action: Action): CartLine[] {
   }
 }
 
+function baseLine(item: MenuItem): CartLine {
+  return { lineId: item.id, item, qty: 1, unitPrice: item.price };
+}
+
 export function useCart() {
   const [cart, dispatch] = useReducer(reducer, []);
 
   const { count, subtotal } = useMemo(
     () => ({
       count: cart.reduce((n, l) => n + l.qty, 0),
-      subtotal: cart.reduce((s, l) => s + l.qty * l.item.price, 0),
+      subtotal: cart.reduce((s, l) => s + l.qty * l.unitPrice, 0),
     }),
     [cart]
   );
@@ -43,8 +47,11 @@ export function useCart() {
     cart,
     count,
     subtotal,
-    addItem: (item: MenuItem) => dispatch({ type: "add", item }),
-    setQty: (id: string, delta: number) => dispatch({ type: "setQty", id, delta }),
+    // Quick add: plain item at base price (no options).
+    addItem: (item: MenuItem) => dispatch({ type: "addLine", line: baseLine(item) }),
+    // Add a fully-configured line (with chosen options / note).
+    addLine: (line: CartLine) => dispatch({ type: "addLine", line }),
+    setQty: (lineId: string, delta: number) => dispatch({ type: "setQty", lineId, delta }),
     clear: () => dispatch({ type: "clear" }),
   };
 }

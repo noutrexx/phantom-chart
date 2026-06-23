@@ -9,6 +9,16 @@ export type MenuItem = {
   popular?: boolean;
 };
 
+export type OptionChoice = { id: string; label: string; delta: number };
+
+export type OptionGroup = {
+  id: string;
+  label: string;
+  type: "single" | "multi";
+  required?: boolean;
+  choices: OptionChoice[];
+};
+
 export type Review = {
   user: string;
   rating: number;
@@ -34,6 +44,15 @@ export type Restaurant = {
   reviews: Review[];
 };
 
-export type CartLine = { item: MenuItem; qty: number };
+// A line in the cart. `lineId` is unique per (item + chosen options + note),
+// so the same dish with different options becomes separate lines.
+export type CartLine = {
+  lineId: string;
+  item: MenuItem;
+  qty: number;
+  unitPrice: number; // base price + option deltas
+  selections?: string[]; // human-readable chosen option labels
+  note?: string;
+};
 
 export type Screen = "splash" | "home" | "restaurant" | "cart" | "tracking";

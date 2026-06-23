@@ -13,7 +13,7 @@ import Tracking from "./components/Tracking";
 export default function App() {
   const [screen, setScreen] = useState<Screen>("splash");
   const [activeId, setActiveId] = useState<string | null>(null);
-  const { cart, count, subtotal, addItem, setQty, clear } = useCart();
+  const { cart, count, subtotal, addItem, addLine, setQty, clear } = useCart();
   const { savings, liveStreak, recordOrder } = useSavings();
   const [lastSaved, setLastSaved] = useState(0);
 
@@ -61,6 +61,7 @@ export default function App() {
               subtotal={subtotal}
               onBack={() => setScreen("home")}
               onAdd={addItem}
+              onAddLine={addLine}
               onCart={() => setScreen("cart")}
             />
           )}

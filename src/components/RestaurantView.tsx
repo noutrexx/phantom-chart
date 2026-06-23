@@ -1,21 +1,11 @@
 import { useMemo, useState } from "react";
-import type { CartLine, MenuItem, Restaurant } from "../types";
+import type { CartLine, MenuItem, OptionGroup, Restaurant } from "../types";
 import { feedback } from "../lib/feedback";
 import { foodImg } from "../lib/img";
+import { optionGroupsFor } from "../lib/options";
 import FoodImage from "./FoodImage";
 import PrimaryButton from "./PrimaryButton";
-import { ChevronLeft, Heart, Minus, Plus, Star, X } from "./icons";
-
-const SIZE_OPTIONS = [
-  { key: "regular", label: "Regular", delta: 0 },
-  { key: "large", label: "Large", delta: 2.5 },
-];
-
-const EXTRA_OPTIONS = [
-  { key: "sauce", label: "Extra sauce", delta: 0.75 },
-  { key: "crispy", label: "Make it crispy", delta: 1.25 },
-  { key: "comfort", label: "Comfort boost", delta: 0 },
-];
+import { Check, ChevronLeft, Heart, Minus, Plus, Star, X } from "./icons";
 
 function slug(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -28,6 +18,7 @@ export default function RestaurantView({
   subtotal,
   onBack,
   onAdd,
+  onAddLine,
   onCart,
 }: {
   restaurant: Restaurant;
@@ -36,6 +27,7 @@ export default function RestaurantView({
   subtotal: number;
   onBack: () => void;
   onAdd: (item: MenuItem) => void;
+  onAddLine: (line: CartLine) => void;
   onCart: () => void;
 }) {
   const [tab, setTab] = useState<"menu" | "reviews">("menu");
@@ -55,7 +47,7 @@ export default function RestaurantView({
   }
 
   function qtyOf(id: string) {
-    return cart.find((l) => l.item.id === id)?.qty ?? 0;
+    return cart.filter((l) => l.item.id === id).reduce((n, l) => n + l.qty, 0);
   }
 
   function jumpToSection(title: string) {
@@ -202,8 +194,11 @@ export default function RestaurantView({
           item={selected}
           restaurant={restaurant}
           onClose={() => setSelected(null)}
-          onAdd={(item, amount) => {
-            add(item, amount);
+          onAddLine={(line) => {
+            onAddLine(line);
+            feedback.add();
+            setPopped(line.item.id);
+            window.setTimeout(() => setPopped((p) => (p === line.item.id ? null : p)), 340);
             setSelected(null);
           }}
         />
@@ -290,30 +285,79 @@ function ProductSheet({
   item,
   restaurant,
   onClose,
-  onAdd,
+  onAddLine,
 }: {
   item: MenuItem;
   restaurant: Restaurant;
   onClose: () => void;
-  onAdd: (item: MenuItem, amount: number) => void;
+  onAddLine: (line: CartLine) => void;
 }) {
-  const [size, setSize] = useState(SIZE_OPTIONS[0].key);
-  const [extras, setExtras] = useState<string[]>([]);
+  const groups = useMemo(() => optionGroupsFor(restaurant, item), [restaurant, item]);
+  const [singleSel, setSingleSel] = useState<Record<string, string>>(() =>
+    Object.fromEntries(groups.filter((g) => g.type === "single").map((g) => [g.id, g.choices[0].id]))
+  );
+  const [multiSel, setMultiSel] = useState<Record<string, string[]>>({});
   const [qty, setQty] = useState(1);
   const [note, setNote] = useState("");
 
-  const sizeDelta = SIZE_OPTIONS.find((option) => option.key === size)?.delta ?? 0;
-  const extrasTotal = extras.reduce((sum, key) => sum + (EXTRA_OPTIONS.find((option) => option.key === key)?.delta ?? 0), 0);
-  const lineTotal = (item.price + sizeDelta + extrasTotal) * qty;
+  function choiceDelta(g: OptionGroup, id: string) {
+    return g.choices.find((c) => c.id === id)?.delta ?? 0;
+  }
+  function choiceLabel(g: OptionGroup, id: string) {
+    return g.choices.find((c) => c.id === id)?.label ?? "";
+  }
 
-  function toggleExtra(key: string) {
+  let delta = 0;
+  const selections: string[] = [];
+  for (const g of groups) {
+    if (g.type === "single") {
+      const id = singleSel[g.id];
+      delta += choiceDelta(g, id);
+      selections.push(choiceLabel(g, id));
+    } else {
+      for (const id of multiSel[g.id] ?? []) {
+        delta += choiceDelta(g, id);
+        selections.push(choiceLabel(g, id));
+      }
+    }
+  }
+  const unitPrice = item.price + delta;
+  const lineTotal = unitPrice * qty;
+
+  function selectSingle(gid: string, cid: string) {
     feedback.tap();
-    setExtras((current) => (current.includes(key) ? current.filter((itemKey) => itemKey !== key) : [...current, key]));
+    setSingleSel((prev) => ({ ...prev, [gid]: cid }));
+  }
+  function toggleMulti(gid: string, cid: string) {
+    feedback.tap();
+    setMultiSel((prev) => {
+      const cur = prev[gid] ?? [];
+      return { ...prev, [gid]: cur.includes(cid) ? cur.filter((x) => x !== cid) : [...cur, cid] };
+    });
+  }
+
+  function handleAdd() {
+    const sig = groups
+      .map((g) =>
+        g.type === "single"
+          ? `${g.id}=${singleSel[g.id]}`
+          : `${g.id}=${[...(multiSel[g.id] ?? [])].sort().join("+")}`
+      )
+      .join("|");
+    const trimmedNote = note.trim();
+    onAddLine({
+      lineId: `${item.id}#${sig}#${trimmedNote}`,
+      item,
+      qty,
+      unitPrice,
+      selections,
+      note: trimmedNote || undefined,
+    });
   }
 
   return (
-    <div className="fixed inset-0 z-40 bg-black/35 flex items-end">
-      <div className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[88%] overflow-y-auto shadow-lift fade-up">
+    <div className="fixed inset-0 z-40 bg-black/35 flex items-end" onClick={onClose}>
+      <div className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[90%] overflow-y-auto shadow-lift fade-up" onClick={(e) => e.stopPropagation()}>
         <div className="relative h-52">
           <FoodImage src={foodImg(item.photo, `${item.id}-sheet`, 720, 460)} alt={item.name} className="absolute inset-0 rounded-t-3xl" gradient={restaurant.gradient} />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/72 to-transparent" />
@@ -327,50 +371,40 @@ function ProductSheet({
         </div>
 
         <div className="px-5 pt-4 pb-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-[13.5px] text-[var(--color-ink-2)] mt-1 leading-snug">{item.desc}</p>
-            </div>
-          </div>
+          <p className="text-[13.5px] text-[var(--color-ink-2)] leading-snug">{item.desc}</p>
 
-          <OptionGroup title="Size">
-            {SIZE_OPTIONS.map((option) => {
-              const active = size === option.key;
-              return (
-                <button
-                  key={option.key}
-                  onClick={() => {
-                    feedback.tap();
-                    setSize(option.key);
-                  }}
-                  className={`w-full flex items-center justify-between rounded-xl border px-3.5 py-3 text-left transition ${
-                    active ? "border-[var(--color-ink)] bg-[var(--color-soft)]" : "border-[var(--color-line)] bg-[var(--color-surface)]"
-                  }`}
-                >
-                  <span className="text-[14px] font-bold">{option.label}</span>
-                  <span className="text-[13px] font-semibold text-[var(--color-ink-2)] tabular-nums">{option.delta > 0 ? `+$${option.delta.toFixed(2)}` : "Included"}</span>
-                </button>
-              );
-            })}
-          </OptionGroup>
-
-          <OptionGroup title="Extras">
-            {EXTRA_OPTIONS.map((option) => {
-              const active = extras.includes(option.key);
-              return (
-                <button
-                  key={option.key}
-                  onClick={() => toggleExtra(option.key)}
-                  className={`w-full flex items-center justify-between rounded-xl border px-3.5 py-3 text-left transition ${
-                    active ? "border-[var(--color-green)] bg-[var(--color-green)]/10" : "border-[var(--color-line)] bg-[var(--color-surface)]"
-                  }`}
-                >
-                  <span className="text-[14px] font-bold">{option.label}</span>
-                  <span className="text-[13px] font-semibold text-[var(--color-ink-2)] tabular-nums">{option.delta > 0 ? `+$${option.delta.toFixed(2)}` : "$0.00"}</span>
-                </button>
-              );
-            })}
-          </OptionGroup>
+          {groups.map((g) => (
+            <OptionSection key={g.id} title={g.label} hint={g.type === "single" ? "Choose one" : "Add any"}>
+              {g.choices.map((choice) => {
+                const active = g.type === "single" ? singleSel[g.id] === choice.id : (multiSel[g.id] ?? []).includes(choice.id);
+                return (
+                  <button
+                    key={choice.id}
+                    onClick={() => (g.type === "single" ? selectSingle(g.id, choice.id) : toggleMulti(g.id, choice.id))}
+                    className={`w-full flex items-center justify-between rounded-xl border px-3.5 py-3 text-left transition ${
+                      active
+                        ? g.type === "single"
+                          ? "border-[var(--color-ink)] bg-[var(--color-soft)]"
+                          : "border-[var(--color-green)] bg-[var(--color-green)]/10"
+                        : "border-[var(--color-line)] bg-[var(--color-surface)]"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <span
+                        className={`grid place-items-center shrink-0 ${g.type === "single" ? "w-5 h-5 rounded-full border-2" : "w-5 h-5 rounded-md border-2"} ${
+                          active ? (g.type === "single" ? "border-[var(--color-ink)]" : "border-[var(--color-green)] bg-[var(--color-green)]") : "border-[var(--color-line-2)]"
+                        }`}
+                      >
+                        {active && (g.type === "single" ? <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-ink)]" /> : <Check size={13} className="text-white" />)}
+                      </span>
+                      <span className="text-[14px] font-bold">{choice.label}</span>
+                    </span>
+                    <span className="text-[13px] font-semibold text-[var(--color-ink-2)] tabular-nums">{choice.delta > 0 ? `+$${choice.delta.toFixed(2)}` : "Included"}</span>
+                  </button>
+                );
+              })}
+            </OptionSection>
+          ))}
 
           <div className="mt-5">
             <label className="text-[14px] font-extrabold tracking-tight">Special note</label>
@@ -393,7 +427,7 @@ function ProductSheet({
                 <Plus size={17} className="text-white" />
               </button>
             </div>
-            <PrimaryButton onClick={() => onAdd(item, qty)} className="flex-1">
+            <PrimaryButton onClick={handleAdd} className="flex-1">
               <span className="flex items-center justify-between w-full">
                 <span>Add to cart</span>
                 <span className="tabular-nums">${lineTotal.toFixed(2)}</span>
@@ -406,10 +440,13 @@ function ProductSheet({
   );
 }
 
-function OptionGroup({ title, children }: { title: string; children: React.ReactNode }) {
+function OptionSection({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <div className="mt-5">
-      <h3 className="text-[14px] font-extrabold tracking-tight mb-2">{title}</h3>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[14px] font-extrabold tracking-tight">{title}</h3>
+        {hint && <span className="text-[11px] font-semibold text-[var(--color-ink-3)] uppercase tracking-wide">{hint}</span>}
+      </div>
       <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
