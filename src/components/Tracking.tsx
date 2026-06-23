@@ -23,10 +23,10 @@ const EVENTS: Record<Outcome, { at: number; icon: string; text: string } | null>
 };
 
 const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string }> = {
-  normal: { emoji: "🫧", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
-  early: { emoji: "⚡", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
-  lost: { emoji: "🌫️", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
-  gift: { emoji: "🍮", title: "Nothing arrived - plus a free dessert.", line: "Two things that do not exist. Twice the comfort." },
+  normal: { emoji: "$0", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
+  early: { emoji: "Fast", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
+  lost: { emoji: "Void", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
+  gift: { emoji: "Gift", title: "Nothing arrived - plus a free dessert.", line: "Two things that do not exist. Twice the comfort." },
 };
 
 export default function Tracking({

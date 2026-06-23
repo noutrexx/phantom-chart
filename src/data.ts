@@ -81,32 +81,32 @@ const P = {
 };
 
 export const CATEGORIES = [
-  { key: "all", label: "All", emoji: "🍽️" },
-  { key: "burger", label: "Burgers", emoji: "🍔" },
-  { key: "chicken", label: "Chicken", emoji: "🍗" },
-  { key: "noodle", label: "Noodles", emoji: "🍜" },
-  { key: "sushi", label: "Sushi", emoji: "🍣" },
-  { key: "pizza", label: "Pizza", emoji: "🍕" },
-  { key: "taco", label: "Tacos", emoji: "🌮" },
-  { key: "thai", label: "Thai", emoji: "🍤" },
-  { key: "chinese", label: "Chinese", emoji: "🥡" },
-  { key: "mediterranean", label: "Mediterranean", emoji: "🥙" },
-  { key: "bbq", label: "BBQ", emoji: "🍖" },
-  { key: "seafood", label: "Seafood", emoji: "🦐" },
-  { key: "breakfast", label: "Brunch", emoji: "🍳" },
-  { key: "healthy", label: "Healthy", emoji: "🥗" },
-  { key: "indian", label: "Indian", emoji: "🍛" },
-  { key: "steak", label: "Steak", emoji: "🥩" },
-  { key: "boba", label: "Boba", emoji: "🧋" },
-  { key: "sweet", label: "Dessert", emoji: "🍰" },
-  { key: "coffee", label: "Coffee", emoji: "☕" },
+  { key: "all", label: "All", emoji: "All" },
+  { key: "burger", label: "Burgers", emoji: "Bg" },
+  { key: "chicken", label: "Chicken", emoji: "Ch" },
+  { key: "noodle", label: "Noodles", emoji: "Nd" },
+  { key: "sushi", label: "Sushi", emoji: "Su" },
+  { key: "pizza", label: "Pizza", emoji: "Pz" },
+  { key: "taco", label: "Tacos", emoji: "Tc" },
+  { key: "thai", label: "Thai", emoji: "Th" },
+  { key: "chinese", label: "Chinese", emoji: "Cn" },
+  { key: "mediterranean", label: "Mediterranean", emoji: "Md" },
+  { key: "bbq", label: "BBQ", emoji: "BQ" },
+  { key: "seafood", label: "Seafood", emoji: "Sf" },
+  { key: "breakfast", label: "Brunch", emoji: "Br" },
+  { key: "healthy", label: "Healthy", emoji: "He" },
+  { key: "indian", label: "Indian", emoji: "In" },
+  { key: "steak", label: "Steak", emoji: "St" },
+  { key: "boba", label: "Boba", emoji: "Bo" },
+  { key: "sweet", label: "Dessert", emoji: "Ds" },
+  { key: "coffee", label: "Coffee", emoji: "Cf" },
 ];
 
 export const RESTAURANTS: Restaurant[] = [
   {
     id: "midnight-diner",
     name: "Midnight Diner",
-    blurb: "Smash burgers · Loaded fries · Shakes",
+    blurb: "Smash burgers / Loaded fries / Shakes",
     emoji: "🍔",
     photo: P.burger,
     gradient: "linear-gradient(135deg,#f7b733,#fc4a1a)",
@@ -144,7 +144,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "seoul-fryer",
     name: "Seoul Fryer",
-    blurb: "Korean fried chicken · Wings · Tenders",
+    blurb: "Korean fried chicken / Wings / Tenders",
     emoji: "🍗",
     photo: P.koreanChicken,
     gradient: "linear-gradient(135deg,#ee0979,#ff6a00)",
@@ -180,7 +180,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "el-pastor",
     name: "El Pastor",
-    blurb: "Street tacos · Burritos · Nachos",
+    blurb: "Street tacos / Burritos / Nachos",
     emoji: "🌮",
     photo: P.tacos1,
     gradient: "linear-gradient(135deg,#f12711,#f5af19)",
@@ -205,7 +205,7 @@ export const RESTAURANTS: Restaurant[] = [
         items: [
           { id: "ep4", name: "Carne Asada Burrito", desc: "Grilled steak, rice, beans, guac, cheese", price: 11.95, emoji: "🌯", photo: P.burrito, popular: true },
           { id: "ep5", name: "Chicken Quesadilla", desc: "Grilled chicken, three-cheese blend", price: 10.5, emoji: "🫓", photo: P.quesadilla },
-          { id: "ep6", name: "Loaded Nachos", desc: "Queso, jalapeños, pico, sour cream", price: 8.75, emoji: "🧀", photo: P.nachos },
+          { id: "ep6", name: "Loaded Nachos", desc: "Queso, jalapenos, pico, sour cream", price: 8.75, emoji: "🧀", photo: P.nachos },
           { id: "ep7", name: "Guac & Chips", desc: "Hand-mashed avocado, warm tortilla chips", price: 5.25, emoji: "🥑", photo: P.guac },
         ],
       },
@@ -218,7 +218,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "slurp-house",
     name: "Slurp House",
-    blurb: "Hand-pulled ramen · Rich tonkotsu broth",
+    blurb: "Hand-pulled ramen / Rich tonkotsu broth",
     emoji: "🍜",
     photo: P.ramen,
     gradient: "linear-gradient(135deg,#f5a623,#f76b1c)",
@@ -255,7 +255,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "pho-real",
     name: "Pho Real",
-    blurb: "Vietnamese pho · Banh mi · Spring rolls",
+    blurb: "Vietnamese pho / Banh mi / Spring rolls",
     emoji: "🍜",
     photo: P.pho,
     gradient: "linear-gradient(135deg,#00b09b,#96c93d)",
@@ -291,7 +291,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "drift-sushi",
     name: "Drift Sushi",
-    blurb: "Omakase sets · Nigiri · Signature rolls",
+    blurb: "Omakase sets / Nigiri / Signature rolls",
     emoji: "🍣",
     photo: P.sushi,
     gradient: "linear-gradient(135deg,#11998e,#38ef7d)",
@@ -329,7 +329,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "dough-theory",
     name: "Dough Theory",
-    blurb: "Sourdough pizza · Wood-fired · Shareable",
+    blurb: "Sourdough pizza / Wood-fired / Shareable",
     emoji: "🍕",
     photo: P.pizza,
     gradient: "linear-gradient(135deg,#ee0979,#ff6a00)",
@@ -366,7 +366,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "green-bowl",
     name: "Green Bowl",
-    blurb: "Poke · Grain bowls · Cold-pressed",
+    blurb: "Poke / Grain bowls / Cold-pressed",
     emoji: "🥗",
     photo: P.poke,
     gradient: "linear-gradient(135deg,#00b09b,#96c93d)",
@@ -402,7 +402,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "curry-club",
     name: "Curry Club",
-    blurb: "North Indian · Biryani · Tandoor",
+    blurb: "North Indian / Biryani / Tandoor",
     emoji: "🍛",
     photo: P.butterChicken,
     gradient: "linear-gradient(135deg,#f12711,#f5af19)",
@@ -439,7 +439,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "sugar-hour",
     name: "Sugar Hour",
-    blurb: "Cakes · Cookies · Ice cream",
+    blurb: "Cakes / Cookies / Ice cream",
     emoji: "🍰",
     photo: P.cake,
     gradient: "linear-gradient(135deg,#ff5f6d,#ffc371)",
@@ -476,7 +476,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "bean-theory",
     name: "Bean Theory",
-    blurb: "Specialty coffee · Pastries · Brunch",
+    blurb: "Specialty coffee / Pastries / Brunch",
     emoji: "☕",
     photo: P.cappuccino,
     gradient: "linear-gradient(135deg,#c79081,#dfa579)",
@@ -513,7 +513,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "bangkok-heat",
     name: "Bangkok Heat",
-    blurb: "Pad thai · Curries · Thai street food",
+    blurb: "Pad thai / Curries / Thai street food",
     emoji: "🍤",
     photo: P.padthai,
     gradient: "linear-gradient(135deg,#11998e,#38ef7d)",
@@ -549,7 +549,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "golden-wok",
     name: "Golden Wok",
-    blurb: "Dumplings · Fried rice · Chinese classics",
+    blurb: "Dumplings / Fried rice / Chinese classics",
     emoji: "🥡",
     photo: P.dumplings,
     gradient: "linear-gradient(135deg,#f12711,#f5af19)",
@@ -585,7 +585,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "olive-and-pita",
     name: "Olive & Pita",
-    blurb: "Shawarma · Falafel · Mezze",
+    blurb: "Shawarma / Falafel / Mezze",
     emoji: "🥙",
     photo: P.shawarma,
     gradient: "linear-gradient(135deg,#00b09b,#96c93d)",
@@ -620,7 +620,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "smoke-stack",
     name: "Smoke Stack BBQ",
-    blurb: "Brisket · Ribs · Low and slow",
+    blurb: "Brisket / Ribs / Low and slow",
     emoji: "🍖",
     photo: P.brisket,
     gradient: "linear-gradient(135deg,#f7b733,#fc4a1a)",
@@ -655,7 +655,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "catch-and-co",
     name: "Catch & Co",
-    blurb: "Fish & chips · Shrimp · Fresh catch",
+    blurb: "Fish & chips / Shrimp / Fresh catch",
     emoji: "🦐",
     photo: P.fishChips,
     gradient: "linear-gradient(135deg,#11998e,#38ef7d)",
@@ -679,7 +679,7 @@ export const RESTAURANTS: Restaurant[] = [
         title: "Baskets",
         items: [
           { id: "cc4", name: "Fried Shrimp Basket", desc: "Cornmeal crust, fries, cocktail sauce", price: 12.25, emoji: "🍤", photo: P.friedShrimp },
-          { id: "cc5", name: "Seafood Platter", desc: "Shrimp, calamari, fish, slaw — the works", price: 24.5, emoji: "🦞", photo: P.seafoodPlatter },
+          { id: "cc5", name: "Seafood Platter", desc: "Shrimp, calamari, fish, slaw - the works", price: 24.5, emoji: "🦞", photo: P.seafoodPlatter },
         ],
       },
     ],
@@ -691,7 +691,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "sunrise-brunch",
     name: "Sunrise Brunch",
-    blurb: "Eggs · Pancakes · All-day brunch",
+    blurb: "Eggs / Pancakes / All-day brunch",
     emoji: "🍳",
     photo: P.eggsBenedict,
     gradient: "linear-gradient(135deg,#ff5f6d,#ffc371)",
@@ -727,7 +727,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "prime-cut",
     name: "Prime Cut",
-    blurb: "Steakhouse · Grills · Big plates",
+    blurb: "Steakhouse / Grills / Big plates",
     emoji: "🥩",
     photo: P.steak,
     gradient: "linear-gradient(135deg,#ee0979,#ff6a00)",
@@ -762,7 +762,7 @@ export const RESTAURANTS: Restaurant[] = [
   {
     id: "boba-lab",
     name: "Boba Lab",
-    blurb: "Milk tea · Brown sugar boba · Fruit tea",
+    blurb: "Milk tea / Brown sugar boba / Fruit tea",
     emoji: "🧋",
     photo: P.bubbleTea,
     gradient: "linear-gradient(135deg,#c79081,#dfa579)",

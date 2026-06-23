@@ -144,11 +144,11 @@ export default function Home({
         </div>
       </div>
 
-      <div className="px-5 pt-4">
+      <div className="px-5 pt-3">
         <HomeHero savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} />
       </div>
 
-      <div className="flex gap-3 overflow-x-auto hide-scroll px-5 pt-4 pb-1">
+      <div className="flex gap-2.5 overflow-x-auto hide-scroll px-5 pt-3 pb-1">
         {CATEGORIES.map((c) => {
           const on = cat === c.key;
           return (
@@ -158,19 +158,21 @@ export default function Home({
                 feedback.tap();
                 setCat(c.key);
               }}
-              className={`shrink-0 h-11 rounded-full border px-3.5 flex items-center gap-2 active:scale-95 transition ${
+              className={`shrink-0 h-10 rounded-full border px-3 flex items-center gap-2 active:scale-95 transition ${
                 on ? "bg-[var(--color-ink)] border-[var(--color-ink)] text-white" : "bg-[var(--color-surface)] border-[var(--color-line)] text-[var(--color-ink)]"
               }`}
             >
-              <span className="text-[19px] leading-none">{c.emoji}</span>
-              <span className="text-[13px] font-extrabold whitespace-nowrap">{c.label}</span>
+              <span className={`h-6 min-w-6 rounded-full px-1.5 grid place-items-center text-[9.5px] font-extrabold ${on ? "bg-white/16 text-white" : "bg-[var(--color-soft)] text-[var(--color-ink-2)]"}`}>
+                {c.emoji}
+              </span>
+              <span className="text-[12.5px] font-extrabold whitespace-nowrap">{c.label}</span>
             </button>
           );
         })}
       </div>
 
       <div className="flex gap-2 overflow-x-auto hide-scroll px-5 pt-3">
-        <span className="shrink-0 h-9 px-3 rounded-full bg-[var(--color-soft)] text-[var(--color-ink)] flex items-center gap-1.5 text-[13px] font-bold">
+        <span className="shrink-0 h-9 px-3 rounded-full bg-[var(--color-soft)] text-[var(--color-ink)] flex items-center gap-1.5 text-[12.5px] font-bold">
           <Sliders size={15} />
           Filters
         </span>
@@ -180,7 +182,7 @@ export default function Home({
             <button
               key={filter.key}
               onClick={() => toggleFilter(filter.key)}
-              className={`shrink-0 h-9 px-3 rounded-full border text-[13px] font-bold transition ${
+              className={`shrink-0 h-9 px-3 rounded-full border text-[12.5px] font-bold transition ${
                 active
                   ? "bg-[var(--color-ink)] border-[var(--color-ink)] text-white"
                   : "bg-[var(--color-surface)] border-[var(--color-line-2)] text-[var(--color-ink)]"
@@ -202,7 +204,7 @@ export default function Home({
           </div>
           <span className="shrink-0 rounded-full bg-[var(--color-green)]/10 px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--color-green-ink)]">Crave score</span>
         </div>
-        <div className="flex flex-col gap-5 stagger">
+        <div className="flex flex-col gap-4 stagger">
           {list.map((r, index) => (
             <RestaurantCard key={r.id} r={r} rank={index + 1} onOpen={() => onOpen(r.id)} fav={isFavorite(r.id)} onToggleFav={() => onToggleFavorite(r.id)} />
           ))}
@@ -232,29 +234,29 @@ function HomeHero({
   onSpin: () => void;
 }) {
   return (
-    <div className="rounded-[18px] bg-[var(--color-ink)] text-white p-4 shadow-lift overflow-hidden relative">
-      <div className="absolute right-0 top-0 h-full w-32 bg-[var(--color-green)]/22" />
+    <div className="rounded-[18px] bg-[var(--color-ink)] text-white p-3.5 shadow-lift overflow-hidden relative">
+      <div className="absolute right-0 top-0 h-full w-24 bg-[var(--color-green)]/22" />
       <div className="relative">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Phantom Eats</p>
-            <h1 className="mt-1 text-[25px] font-extrabold tracking-tight leading-tight">Eat the idea. Keep the money.</h1>
-            <p className="mt-1.5 text-[13px] text-white/70 leading-snug">Browse real-looking cravings, place fake orders, and win the dopamine loop without checkout.</p>
+            <p className="text-[10.5px] font-extrabold tracking-[0.16em] uppercase text-white/55">Tonight's ritual</p>
+            <h1 className="mt-1 text-[21px] font-extrabold tracking-tight leading-tight">Build the cart. Spend $0.</h1>
+            <p className="mt-1 text-[12.5px] text-white/70 leading-snug">Real cravings, fake checkout, clean wallet.</p>
           </div>
-          <div className="shrink-0 rounded-2xl bg-white text-[var(--color-ink)] px-3 py-2 text-right">
+          <div className="shrink-0 rounded-2xl bg-white text-[var(--color-ink)] px-3 py-2 text-right shadow-soft">
             <p className="text-[18px] font-extrabold tabular-nums leading-none">${savings.totalSaved.toFixed(0)}</p>
             <p className="text-[10px] font-bold text-[var(--color-ink-3)] mt-1">saved</p>
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="mt-3 grid grid-cols-3 gap-2">
           <HeroStat value={String(savings.orders)} label="orders" />
           <HeroStat value={`${liveStreak}x`} label="streak" />
           <HeroStat value={coupon} label="coupon" />
         </div>
 
-        <button onClick={onSpin} className="mt-3 h-10 w-full rounded-xl bg-white text-[var(--color-ink)] text-[13px] font-extrabold active:scale-[0.98] transition">
-          Spin fake coupon
+        <button onClick={onSpin} className="mt-3 h-9 w-full rounded-xl bg-white text-[var(--color-ink)] text-[12.5px] font-extrabold active:scale-[0.98] transition">
+          Refresh coupon
         </button>
       </div>
     </div>
@@ -276,7 +278,8 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
 
   return (
     <button onClick={onOpen} className="block w-full text-left active:opacity-95 transition">
-      <div className="relative rounded-xl overflow-hidden aspect-[16/9] shadow-soft">
+      <div className="rounded-[18px] border border-[var(--color-line)] bg-[var(--color-surface)] shadow-soft overflow-hidden">
+      <div className="relative overflow-hidden aspect-[16/9]">
         <FoodImage src={foodImg(r.photo, r.id, 720, 460)} alt={r.name} className="absolute inset-0" gradient={r.gradient} />
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/34 to-transparent" />
         <span className="absolute top-3 left-3 bg-white text-[11.5px] font-extrabold rounded-full px-2.5 py-1.5 shadow-soft tabular-nums">
@@ -301,26 +304,27 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
           Free delivery
         </span>
       </div>
-      <div className="pt-2.5">
+      <div className="p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h3 className="text-[17px] font-extrabold tracking-tight leading-tight truncate">{r.name}</h3>
-            <p className="text-[13.5px] text-[var(--color-ink-2)] mt-0.5 truncate">
-              {r.category} / {r.priceLevel} / {r.distanceKm} km
+            <p className="text-[13px] text-[var(--color-ink-2)] mt-0.5 truncate">
+              {r.category} / {r.priceLevel} / {r.distanceKm} km away
             </p>
           </div>
-          <span className="shrink-0 flex items-center gap-1 bg-[var(--color-soft)] rounded-full px-2 py-1">
+          <span className="shrink-0 flex items-center gap-1 bg-[var(--color-soft)] rounded-full px-2.5 py-1">
             <Star size={12} className="text-[var(--color-ink)]" />
             <span className="text-[12.5px] font-bold tabular-nums">{r.rating}</span>
           </span>
         </div>
-        <div className="mt-2 flex items-center gap-2 overflow-hidden">
+        <div className="mt-2.5 flex items-center gap-2 overflow-hidden">
           <span className="shrink-0 rounded-full bg-[var(--color-green)]/10 text-[var(--color-green-ink)] px-2.5 py-1 text-[11.5px] font-extrabold">
             {deal}
           </span>
           {fast && <span className="shrink-0 rounded-full bg-[var(--color-soft)] px-2.5 py-1 text-[11.5px] font-bold">Fast favorite</span>}
           <span className="min-w-0 truncate text-[12px] text-[var(--color-ink-3)]">{r.blurb}</span>
         </div>
+      </div>
       </div>
     </button>
   );

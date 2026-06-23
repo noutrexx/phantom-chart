@@ -151,7 +151,7 @@ function CartLineRow({ line, onQty }: { line: CartLine; onQty: (id: string, delt
         {line.selections && line.selections.length > 0 && (
           <p className="text-[12px] text-[var(--color-ink-3)] mt-0.5 truncate">{line.selections.join(", ")}</p>
         )}
-        {line.note && <p className="text-[12px] text-[var(--color-ink-3)] italic truncate">“{line.note}”</p>}
+        {line.note && <p className="text-[12px] text-[var(--color-ink-3)] italic truncate">"{line.note}"</p>}
         <p className="text-[13.5px] font-semibold text-[var(--color-ink-2)] mt-0.5 tabular-nums">${(line.unitPrice * line.qty).toFixed(2)}</p>
       </div>
       <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1 self-start">
