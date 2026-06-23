@@ -30,6 +30,12 @@ const FILTERS: { key: FilterKey; label: string }[] = [
 
 const COUPONS = ["ZEROHERO", "NOBILL", "CARTZEN", "SKIP100"];
 
+function categoryPhoto(key: string): { photo: string; gradient: string; name: string } {
+  const match = key === "all" ? RESTAURANTS[0] : RESTAURANTS.find((restaurant) => restaurant.tags.includes(key));
+  const restaurant = match ?? RESTAURANTS[0];
+  return { photo: restaurant.photo, gradient: restaurant.gradient, name: restaurant.name };
+}
+
 export default function Home({
   savings,
   liveStreak,
@@ -104,6 +110,8 @@ export default function Home({
     : cat === "all"
       ? "Featured near you"
       : CATEGORIES.find((c) => c.key === cat)?.label ?? "Featured near you";
+  const heroRestaurant = list[0] ?? RESTAURANTS[0];
+  const tonightPicks = list.slice(0, 4);
 
   return (
     <div className="h-full overflow-y-auto pb-40 bg-[var(--color-bg)]">
@@ -145,12 +153,13 @@ export default function Home({
       </div>
 
       <div className="px-5 pt-3">
-        <HomeHero savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} />
+        <HomeHero savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} featured={heroRestaurant} onOpen={onOpen} />
       </div>
 
       <div className="flex gap-2.5 overflow-x-auto hide-scroll px-5 pt-3 pb-1">
         {CATEGORIES.map((c) => {
           const on = cat === c.key;
+          const visual = categoryPhoto(c.key);
           return (
             <button
               key={c.key}
@@ -158,13 +167,11 @@ export default function Home({
                 feedback.tap();
                 setCat(c.key);
               }}
-              className={`shrink-0 h-10 rounded-full border px-3 flex items-center gap-2 active:scale-95 transition ${
+              className={`shrink-0 h-11 rounded-full border py-1 pl-1.5 pr-3 flex items-center gap-2 active:scale-95 transition ${
                 on ? "bg-[var(--color-ink)] border-[var(--color-ink)] text-white" : "bg-[var(--color-surface)] border-[var(--color-line)] text-[var(--color-ink)]"
               }`}
             >
-              <span className={`h-6 min-w-6 rounded-full px-1.5 grid place-items-center text-[9.5px] font-extrabold ${on ? "bg-white/16 text-white" : "bg-[var(--color-soft)] text-[var(--color-ink-2)]"}`}>
-                {c.emoji}
-              </span>
+              <FoodImage src={foodImg(visual.photo, `${c.key}-cat`, 90, 90)} alt={c.label} className="h-8 w-8 rounded-full shrink-0" gradient={visual.gradient} />
               <span className="text-[12.5px] font-extrabold whitespace-nowrap">{c.label}</span>
             </button>
           );
@@ -193,6 +200,27 @@ export default function Home({
           );
         })}
       </div>
+
+      {tonightPicks.length > 0 && (
+        <div className="pt-4">
+          <div className="px-5 flex items-center justify-between">
+            <h2 className="text-[17px] font-extrabold tracking-tight">Tonight picks</h2>
+            <span className="text-[11.5px] font-bold text-[var(--color-ink-3)]">Top rated</span>
+          </div>
+          <div className="mt-2 flex gap-3 overflow-x-auto hide-scroll px-5 pb-1">
+            {tonightPicks.map((restaurant) => (
+              <button key={restaurant.id} onClick={() => onOpen(restaurant.id)} className="shrink-0 w-[132px] text-left active:scale-[0.98] transition">
+                <div className="relative h-[92px] overflow-hidden rounded-2xl shadow-soft">
+                  <FoodImage src={foodImg(restaurant.photo, `${restaurant.id}-pick`, 260, 190)} alt={restaurant.name} className="absolute inset-0" gradient={restaurant.gradient} />
+                  <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/65 to-transparent" />
+                  <span className="absolute bottom-2 left-2 right-2 truncate text-[12px] font-extrabold text-white">{restaurant.name}</span>
+                </div>
+                <p className="mt-1.5 truncate text-[11.5px] font-bold text-[var(--color-ink-2)]">{restaurant.etaMin}-{restaurant.etaMin + 7} min / {restaurant.rating}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="px-5 mt-4">
         <div className="flex items-end justify-between gap-3 mb-3">
@@ -227,23 +255,28 @@ function HomeHero({
   liveStreak,
   coupon,
   onSpin,
+  featured,
+  onOpen,
 }: {
   savings: Savings;
   liveStreak: number;
   coupon: string;
   onSpin: () => void;
+  featured: Restaurant;
+  onOpen: (id: string) => void;
 }) {
   return (
-    <div className="rounded-[18px] bg-[var(--color-ink)] text-white p-3.5 shadow-lift overflow-hidden relative">
-      <div className="absolute right-0 top-0 h-full w-24 bg-[var(--color-green)]/22" />
-      <div className="relative">
+    <div className="relative h-[204px] overflow-hidden rounded-[22px] bg-[var(--color-ink)] text-white shadow-lift">
+      <FoodImage src={foodImg(featured.photo, `${featured.id}-home-hero`, 760, 420)} alt={featured.name} className="absolute inset-0" gradient={featured.gradient} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/76 via-black/34 to-black/12" />
+      <div className="absolute inset-x-0 bottom-0 p-4">
         <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[10.5px] font-extrabold tracking-[0.16em] uppercase text-white/55">Tonight's ritual</p>
-            <h1 className="mt-1 text-[21px] font-extrabold tracking-tight leading-tight">Build the cart. Spend $0.</h1>
-            <p className="mt-1 text-[12.5px] text-white/70 leading-snug">Real cravings, fake checkout, clean wallet.</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10.5px] font-extrabold tracking-[0.16em] uppercase text-white/70">Tonight's pick</p>
+            <h1 className="mt-1 truncate text-[25px] font-extrabold tracking-tight leading-tight">{featured.name}</h1>
+            <p className="mt-1 line-clamp-2 text-[12.5px] text-white/78 leading-snug">{featured.blurb}</p>
           </div>
-          <div className="shrink-0 rounded-2xl bg-white text-[var(--color-ink)] px-3 py-2 text-right shadow-soft">
+          <div className="shrink-0 rounded-2xl bg-white px-3 py-2 text-right text-[var(--color-ink)] shadow-soft">
             <p className="text-[18px] font-extrabold tabular-nums leading-none">${savings.totalSaved.toFixed(0)}</p>
             <p className="text-[10px] font-bold text-[var(--color-ink-3)] mt-1">saved</p>
           </div>
@@ -255,9 +288,14 @@ function HomeHero({
           <HeroStat value={coupon} label="coupon" />
         </div>
 
-        <button onClick={onSpin} className="mt-3 h-9 w-full rounded-xl bg-white text-[var(--color-ink)] text-[12.5px] font-extrabold active:scale-[0.98] transition">
-          Refresh coupon
-        </button>
+        <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+          <button onClick={() => onOpen(featured.id)} className="h-10 rounded-xl bg-white text-[var(--color-ink)] text-[13px] font-extrabold active:scale-[0.98] transition">
+            Open place
+          </button>
+          <button onClick={onSpin} className="h-10 rounded-xl bg-white/14 px-3 text-[12.5px] font-extrabold text-white backdrop-blur active:scale-[0.98] transition">
+            Refresh
+          </button>
+        </div>
       </div>
     </div>
   );
