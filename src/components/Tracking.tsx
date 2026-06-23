@@ -283,7 +283,9 @@ function Reveal({
       {show && <ConfettiBurst />}
       {show && (
         <div className="fade-up w-full max-w-[20rem]">
-          <div className="text-[72px] leading-none">{copy.emoji}</div>
+          <div className="mx-auto inline-flex min-w-20 items-center justify-center rounded-2xl bg-[var(--color-ink)] px-5 py-3 text-[22px] font-extrabold leading-none text-white shadow-lift">
+            {copy.emoji}
+          </div>
           <h2 className="mt-5 text-[25px] font-extrabold tracking-tight leading-tight">{copy.title}</h2>
           <p className="mt-2.5 text-[14.5px] text-[var(--color-ink-2)] leading-relaxed">
             {copy.line} The craving from {restaurant.name} is gone - and you spent{" "}

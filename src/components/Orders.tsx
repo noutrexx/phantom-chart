@@ -26,14 +26,22 @@ export default function Orders({
   onRate: (id: string, rating: number, review: string) => void;
 }) {
   const reviewed = orders.filter((order) => order.rating).length;
+  const active = orders.filter((order) => order.status === "active").length;
 
   return (
     <div className="h-full overflow-y-auto pb-24 bg-[var(--color-bg)]">
-      <div className="px-5 pt-3 pb-3 border-b border-[var(--color-line)] bg-[var(--color-bg)]/95 backdrop-blur sticky top-0 z-10">
-        <h1 className="text-[24px] font-extrabold tracking-tight">Your orders</h1>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <SummaryPill label="Phantom orders" value={String(orders.length)} />
-          <SummaryPill label="Reviews posted" value={String(reviewed)} />
+      <div className="sticky top-0 z-10 border-b border-[var(--color-line)] bg-[var(--color-bg)]/95 px-5 pt-3 pb-3 backdrop-blur">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <h1 className="text-[24px] font-extrabold tracking-tight">Your orders</h1>
+            <p className="text-[12.5px] text-[var(--color-ink-2)] mt-0.5">Rate the ritual, reorder the craving.</p>
+          </div>
+          {active > 0 && <span className="rounded-full bg-[var(--color-green)]/10 px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--color-green-ink)]">Live</span>}
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          <SummaryPill label="Orders" value={String(orders.length)} />
+          <SummaryPill label="Reviewed" value={String(reviewed)} />
+          <SummaryPill label="Active" value={String(active)} />
         </div>
       </div>
 
@@ -72,11 +80,14 @@ function OrderCard({
   const active = order.status === "active";
   const [rating, setRating] = useState(order.rating ?? 0);
   const [review, setReview] = useState(order.review ?? "");
+  const [saved, setSaved] = useState(false);
   const canSave = !active && rating > 0;
 
   function saveReview() {
     if (!canSave) return;
     onRate(order.id, rating, review);
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 1800);
   }
 
   return (
@@ -105,6 +116,10 @@ function OrderCard({
 
       {!active && (
         <div className="mx-3 mb-3 rounded-xl bg-[var(--color-soft)] p-3">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-[13px] font-extrabold tracking-tight">Rate this save</p>
+            {saved && <span className="text-[11px] font-extrabold text-[var(--color-green-ink)]">Saved</span>}
+          </div>
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((value) => (
@@ -118,8 +133,8 @@ function OrderCard({
                 </button>
               ))}
             </div>
-            {order.rating ? (
-              <span className="shrink-0 text-[11px] font-extrabold text-[var(--color-green-ink)]">Reviewed</span>
+            {rating ? (
+              <span className="shrink-0 text-[11px] font-extrabold text-[var(--color-green-ink)]">{rating}/5</span>
             ) : (
               <span className="shrink-0 text-[11px] font-extrabold text-[var(--color-ink-3)]">Tap to rate</span>
             )}
@@ -136,15 +151,18 @@ function OrderCard({
             />
           </label>
 
-          <button
-            onClick={saveReview}
-            disabled={!canSave}
-            className={`mt-2 h-10 w-full rounded-xl text-[13px] font-extrabold transition ${
-              canSave ? "bg-[var(--color-ink)] text-white active:scale-[0.98]" : "bg-[var(--color-line)] text-[var(--color-ink-3)]"
-            }`}
-          >
-            {order.rating ? "Update review" : "Save review"}
-          </button>
+          <div className="mt-2 flex items-center gap-2">
+            <button
+              onClick={saveReview}
+              disabled={!canSave}
+              className={`h-10 flex-1 rounded-xl text-[13px] font-extrabold transition ${
+                canSave ? "bg-[var(--color-ink)] text-white active:scale-[0.98]" : "bg-[var(--color-line)] text-[var(--color-ink-3)]"
+              }`}
+            >
+              {order.rating ? "Update" : "Post review"}
+            </button>
+            {review.length > 0 && <span className="shrink-0 text-[11px] font-bold text-[var(--color-ink-3)] tabular-nums">{review.length}/180</span>}
+          </div>
         </div>
       )}
 
