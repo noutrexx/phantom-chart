@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { Restaurant } from "../types";
 import type { Savings } from "../hooks/useSavings";
 import PrimaryButton from "./PrimaryButton";
 import { feedback } from "../lib/feedback";
-import { Check, Bike } from "./icons";
+import { Bike, Check, Clock, Message, Phone, Pin, Star } from "./icons";
 
 type Outcome = "normal" | "early" | "lost" | "gift";
 
@@ -12,8 +12,22 @@ const STEPS = [
   { label: "Order confirmed", sub: "The kitchen acknowledged your imagination." },
   { label: "Preparing your order", sub: "Sizzling sounds, conceptually." },
   { label: "Courier picked up", sub: "Bag sealed. Bag empty. Bag perfect." },
-  { label: "On the way to you", sub: "Echo is dodging traffic that doesn't exist." },
+  { label: "On the way to you", sub: "Echo is dodging traffic that does not exist." },
 ];
+
+const EVENTS: Record<Outcome, { at: number; icon: string; text: string } | null> = {
+  normal: null,
+  early: { at: 0.35, icon: "Fast", text: "Echo found a shortcut through streets that do not exist." },
+  lost: { at: 0.5, icon: "Map", text: "Echo took a wrong turn. Honestly, relatable." },
+  gift: { at: 0.5, icon: "Gift", text: "The kitchen slipped a free dessert into your bag. Also imaginary." },
+};
+
+const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string }> = {
+  normal: { emoji: "🫧", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
+  early: { emoji: "⚡", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
+  lost: { emoji: "🌫️", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
+  gift: { emoji: "🍮", title: "Nothing arrived - plus a free dessert.", line: "Two things that do not exist. Twice the comfort." },
+};
 
 function pickOutcome(): Outcome {
   const r = Math.random();
@@ -22,13 +36,6 @@ function pickOutcome(): Outcome {
   if (r < 0.8) return "lost";
   return "gift";
 }
-
-const EVENTS: Record<Outcome, { at: number; icon: string; text: string } | null> = {
-  normal: null,
-  early: { at: 0.35, icon: "💨", text: "Echo found a shortcut through streets that don't exist." },
-  lost: { at: 0.5, icon: "🗺️", text: "Echo took a wrong turn. Honestly, relatable." },
-  gift: { at: 0.5, icon: "🍮", text: "The kitchen slipped a free dessert into your bag. Also imaginary." },
-};
 
 export default function Tracking({
   restaurant,
@@ -45,7 +52,6 @@ export default function Tracking({
 }) {
   const [outcome] = useState<Outcome>(pickOutcome);
   const rideMs = outcome === "early" ? 9000 : outcome === "lost" ? 16000 : 13000;
-
   const [elapsed, setElapsed] = useState(0);
   const [done, setDone] = useState(false);
   const [event, setEvent] = useState<{ icon: string; text: string } | null>(null);
@@ -57,8 +63,8 @@ export default function Tracking({
     const startT = performance.now();
     const id = window.setInterval(() => {
       const e = performance.now() - startT;
-      setElapsed(e);
       const p = Math.min(1, e / rideMs);
+      setElapsed(e);
 
       if (ev && !eventFired.current && p >= ev.at) {
         eventFired.current = true;
@@ -87,6 +93,7 @@ export default function Tracking({
   const progress = Math.min(1, elapsed / rideMs);
   const step = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length));
   const minsLeft = Math.max(1, Math.ceil(restaurant.etaMin * (1 - progress)));
+  const activeStep = STEPS[step];
 
   if (done) {
     return <Reveal restaurant={restaurant} saved={saved} savings={savings} liveStreak={liveStreak} outcome={outcome} onAgain={onAgain} />;
@@ -94,24 +101,42 @@ export default function Tracking({
 
   return (
     <div className="h-full flex flex-col bg-[var(--color-bg)]">
-      {/* Map */}
       <div className="relative h-[44%] overflow-hidden" style={{ background: "#e9efea" }}>
         <MapArt progress={progress} />
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-soft">
-          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] pulse-dot" />
-          <span className="text-[11.5px] font-bold tracking-tight">Live tracking</span>
+
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-soft">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] pulse-dot" />
+            <span className="text-[11.5px] font-bold tracking-tight">Live tracking</span>
+          </div>
+          <div className="bg-white rounded-full px-3 py-1.5 shadow-soft text-[11.5px] font-extrabold tabular-nums">
+            {Math.round(progress * 100)}%
+          </div>
         </div>
+
+        <div className="absolute left-4 bottom-5 right-4 rounded-2xl bg-white/95 backdrop-blur shadow-card p-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[var(--color-ink)] grid place-items-center">
+              <Bike size={20} className="text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13.5px] font-extrabold tracking-tight">Echo is en route</p>
+              <p className="text-[12px] text-[var(--color-ink-2)] truncate">Restaurant to Your couch - phantom route active</p>
+            </div>
+            <span className="text-[12px] font-extrabold text-[var(--color-green-ink)] tabular-nums">{minsLeft} min</span>
+          </div>
+        </div>
+
         {event && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] fade-up">
+          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[88%] fade-up">
             <div className="flex items-center gap-3 rounded-2xl bg-white shadow-card px-4 py-3">
-              <span className="text-[22px]">{event.icon}</span>
+              <span className="rounded-full bg-[var(--color-soft)] px-2 py-1 text-[11px] font-extrabold">{event.icon}</span>
               <span className="text-[12.5px] text-[var(--color-ink)] leading-snug">{event.text}</span>
             </div>
           </div>
         )}
       </div>
 
-      {/* Sheet */}
       <div className="flex-1 -mt-5 rounded-t-3xl bg-[var(--color-bg)] shadow-lift px-6 pt-6 pb-7 relative z-10 flex flex-col overflow-y-auto">
         <div className="flex items-end justify-between">
           <div>
@@ -126,11 +151,23 @@ export default function Tracking({
           </div>
         </div>
 
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <TrackingMetric icon={<Clock size={15} />} label={`${minsLeft} min`} sub="ETA" />
+          <TrackingMetric icon={<Pin size={15} />} label="0.0 mi" sub="Real distance" />
+          <TrackingMetric icon={<Star size={14} />} label="$0.00" sub="Total" />
+        </div>
+
         <div className="mt-4 h-1.5 rounded-full bg-[var(--color-line)] overflow-hidden">
           <div className="h-full rounded-full bg-[var(--color-green)] transition-[width] duration-200" style={{ width: `${progress * 100}%` }} />
         </div>
 
-        <div className="mt-6 flex flex-col gap-5 flex-1">
+        <div className="mt-3 rounded-xl bg-[var(--color-soft)] px-3.5 py-3">
+          <p className="text-[12px] text-[var(--color-ink-3)] font-bold">Current status</p>
+          <p className="text-[14px] font-extrabold tracking-tight mt-0.5">{activeStep.label}</p>
+          <p className="text-[12.5px] text-[var(--color-ink-2)] mt-0.5">{activeStep.sub}</p>
+        </div>
+
+        <div className="mt-5 flex flex-col gap-4 flex-1">
           {STEPS.map((s, i) => {
             const active = i === step;
             const reached = i <= step;
@@ -148,17 +185,39 @@ export default function Tracking({
           })}
         </div>
 
-        <div className="flex items-center gap-3 card shadow-soft p-3 mt-4">
-          <div className="w-11 h-11 rounded-full bg-[var(--color-ink)] grid place-items-center">
-            <Bike size={22} className="text-white" />
+        <div className="card shadow-soft p-3 mt-4">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-[var(--color-ink)] grid place-items-center">
+              <Bike size={22} className="text-white" />
+            </div>
+            <div className="flex-1">
+              <p className="text-[13.5px] font-bold">Echo - your courier</p>
+              <p className="text-[12.5px] text-[var(--color-ink-2)]">Carrying absolutely nothing, with care</p>
+            </div>
+            <span className="rounded-full bg-[var(--color-soft)] px-2.5 py-1 text-[11.5px] font-extrabold">4.98</span>
           </div>
-          <div className="flex-1">
-            <p className="text-[13.5px] font-bold">Echo · your courier</p>
-            <p className="text-[12.5px] text-[var(--color-ink-2)]">Carrying absolutely nothing, with care</p>
+          <div className="grid grid-cols-2 gap-2 mt-3">
+            <button className="h-10 rounded-xl bg-[var(--color-soft)] flex items-center justify-center gap-2 text-[13px] font-extrabold active:scale-[0.98] transition">
+              <Phone size={15} /> Call
+            </button>
+            <button className="h-10 rounded-xl bg-[var(--color-soft)] flex items-center justify-center gap-2 text-[13px] font-extrabold active:scale-[0.98] transition">
+              <Message size={15} /> Message
+            </button>
           </div>
-          <span className="w-9 h-9 rounded-full bg-[var(--color-soft)] grid place-items-center text-[16px]">💬</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function TrackingMetric({ icon, label, sub }: { icon: ReactNode; label: string; sub: string }) {
+  return (
+    <div className="rounded-xl border border-[var(--color-line)] px-3 py-2.5">
+      <div className="flex items-center gap-1.5 text-[var(--color-ink)]">
+        {icon}
+        <span className="text-[13px] font-extrabold tabular-nums">{label}</span>
+      </div>
+      <p className="text-[11px] text-[var(--color-ink-3)] mt-0.5">{sub}</p>
     </div>
   );
 }
@@ -181,13 +240,18 @@ function MapArt({ progress }: { progress: number }) {
       </g>
       <path d="M 26 196 C 110 70, 210 70, 250 140 S 360 230, 404 110" fill="none" stroke="#cfd8d2" strokeWidth="6" strokeLinecap="round" />
       <path d="M 26 196 C 110 70, 210 70, 250 140 S 360 230, 404 110" fill="none" stroke="#0b0b0c" strokeWidth="6" strokeLinecap="round" strokeDasharray="1100" strokeDashoffset={1100 - progress * 1100} />
-      {/* destination */}
       <circle cx="404" cy="110" r="11" fill="#06c167" />
       <circle cx="404" cy="110" r="4" fill="#fff" />
-      {/* origin */}
+      <g>
+        <rect x="278" y="82" width="78" height="24" rx="12" fill="#fff" />
+        <text x="317" y="98" textAnchor="middle" fontSize="11" fontWeight="800" fill="#0b0b0c">Your couch</text>
+      </g>
       <circle cx="26" cy="196" r="7" fill="#0b0b0c" />
-      {/* courier */}
-      <foreignObject className="courier" width="40" height="40" x="-20" y="-20" style={{ offsetDistance: `${progress * 100}%` } as any}>
+      <g>
+        <rect x="74" y="176" width="76" height="24" rx="12" fill="#fff" />
+        <text x="112" y="192" textAnchor="middle" fontSize="11" fontWeight="800" fill="#0b0b0c">Restaurant</text>
+      </g>
+      <foreignObject className="courier" width="40" height="40" x="-20" y="-20" style={{ offsetDistance: `${progress * 100}%` } as CSSProperties}>
         <div className="w-10 h-10 rounded-full bg-white shadow-card grid place-items-center">
           <Bike size={20} className="text-[var(--color-ink)]" />
         </div>
@@ -195,13 +259,6 @@ function MapArt({ progress }: { progress: number }) {
     </svg>
   );
 }
-
-const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string }> = {
-  normal: { emoji: "🫧", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
-  early: { emoji: "⚡", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
-  lost: { emoji: "🌫️", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
-  gift: { emoji: "🍮", title: "Nothing arrived - plus a free dessert.", line: "Two things that don't exist. Twice the comfort." },
-};
 
 function Reveal({
   restaurant,
@@ -247,16 +304,14 @@ function Reveal({
             </div>
             <div className="flex items-center justify-between text-[12.5px] mt-1.5">
               <span className="text-[var(--color-ink-2)]">Night streak</span>
-              <span className="font-bold tabular-nums">{liveStreak > 0 ? `🔥 ${liveStreak}` : "🌙 0"}</span>
+              <span className="font-bold tabular-nums">{liveStreak > 0 ? `Fire ${liveStreak}` : "0"}</span>
             </div>
           </div>
 
           <div className="mt-3 rounded-2xl bg-[var(--color-ink)] text-white p-4 text-left shadow-lift">
             <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Achievement unlocked</p>
             <p className="mt-1 text-[15px] font-extrabold">Zero Dollar Hero</p>
-            <p className="mt-1 text-[12.5px] text-white/70">
-              You completed the full order ritual and kept every dollar.
-            </p>
+            <p className="mt-1 text-[12.5px] text-white/70">You completed the full order ritual and kept every dollar.</p>
           </div>
 
           <div className="mt-6 flex flex-col gap-2.5">
