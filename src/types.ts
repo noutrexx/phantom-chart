@@ -4,7 +4,9 @@ export type MenuItem = {
   desc: string;
   price: number;
   emoji: string;
+  photo: string; // image search keyword
   tag?: string;
+  popular?: boolean;
 };
 
 export type Review = {
@@ -19,11 +21,14 @@ export type Restaurant = {
   name: string;
   blurb: string;
   emoji: string;
+  photo: string; // hero image search keyword
   gradient: string;
   rating: number;
   reviewsCount: number;
   etaMin: number;
   distanceKm: number;
+  priceLevel: string; // e.g. "$$"
+  category: string; // display cuisine
   tags: string[];
   sections: { title: string; items: MenuItem[] }[];
   reviews: Review[];

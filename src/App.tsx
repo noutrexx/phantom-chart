@@ -3,6 +3,7 @@ import type { Restaurant, Screen } from "./types";
 import { RESTAURANTS } from "./data";
 import { useCart } from "./hooks/useCart";
 import { useSavings } from "./hooks/useSavings";
+import StatusBar from "./components/StatusBar";
 import Splash from "./components/Splash";
 import Home from "./components/Home";
 import RestaurantView from "./components/RestaurantView";
@@ -32,56 +33,62 @@ export default function App() {
     setScreen("tracking");
   }
 
+  const darkBar = screen === "splash";
+
   return (
     <div className="stage">
       <div className="phone no-tap">
-        {screen === "splash" && <Splash onEnter={() => setScreen("home")} />}
+        <StatusBar dark={darkBar} />
+        <div className="flex-1 min-h-0 relative">
+          {screen === "splash" && <Splash onEnter={() => setScreen("home")} />}
 
-        {screen === "home" && (
-          <Home
-            savings={savings}
-            liveStreak={liveStreak}
-            onOpen={openRestaurant}
-            cartCount={count}
-            onCart={() => setScreen("cart")}
-          />
-        )}
+          {screen === "home" && (
+            <Home
+              savings={savings}
+              liveStreak={liveStreak}
+              onOpen={openRestaurant}
+              cartCount={count}
+              subtotal={subtotal}
+              onCart={() => setScreen("cart")}
+            />
+          )}
 
-        {screen === "restaurant" && active && (
-          <RestaurantView
-            restaurant={active}
-            cart={cart}
-            cartCount={count}
-            subtotal={subtotal}
-            onBack={() => setScreen("home")}
-            onAdd={addItem}
-            onCart={() => setScreen("cart")}
-          />
-        )}
+          {screen === "restaurant" && active && (
+            <RestaurantView
+              restaurant={active}
+              cart={cart}
+              cartCount={count}
+              subtotal={subtotal}
+              onBack={() => setScreen("home")}
+              onAdd={addItem}
+              onCart={() => setScreen("cart")}
+            />
+          )}
 
-        {screen === "cart" && (
-          <Cart
-            cart={cart}
-            subtotal={subtotal}
-            onBack={() => setScreen(active ? "restaurant" : "home")}
-            onQty={setQty}
-            onPlace={placeOrder}
-            onBrowse={() => setScreen("home")}
-          />
-        )}
+          {screen === "cart" && (
+            <Cart
+              cart={cart}
+              subtotal={subtotal}
+              onBack={() => setScreen(active ? "restaurant" : "home")}
+              onQty={setQty}
+              onPlace={placeOrder}
+              onBrowse={() => setScreen("home")}
+            />
+          )}
 
-        {screen === "tracking" && active && (
-          <Tracking
-            restaurant={active}
-            saved={lastSaved}
-            savings={savings}
-            liveStreak={liveStreak}
-            onAgain={() => {
-              clear();
-              setScreen("home");
-            }}
-          />
-        )}
+          {screen === "tracking" && active && (
+            <Tracking
+              restaurant={active}
+              saved={lastSaved}
+              savings={savings}
+              liveStreak={liveStreak}
+              onAgain={() => {
+                clear();
+                setScreen("home");
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
