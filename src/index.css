@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens ---------- */
+@theme {
+  --color-ink: #0e0d12;
+  --color-ink-2: #16141d;
+  --color-ink-3: #211e2b;
+  --color-line: #2c2838;
+  --color-cream: #f5f1ea;
+  --color-muted: #9b94a8;
+  --color-peach: #ff8a5c;
+  --color-amber: #ffb547;
+  --color-mint: #4fd1a5;
+  --color-rose: #ff5c8a;
+  --font-display: "General Sans", "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: radial-gradient(120% 80% at 50% -10%, #1c1825 0%, var(--color-ink) 55%);
+    color: var(--color-cream);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+/* ---------- Phone shell ---------- */
+.phone {
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+  min-height: 100dvh;
+  position: relative;
+  background: var(--color-ink);
+  overflow: hidden;
+}
+@media (min-width: 480px) {
+  .stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 24px;
+  }
+  .phone {
+    min-height: 880px;
+    max-height: 92dvh;
+    border-radius: 40px;
+    border: 1px solid var(--color-line);
+    box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.8), 0 0 0 8px #0a0910;
+  }
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-ink-2) 80%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+/* ---------- Animations ---------- */
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+.animate-pop { animation: pop 0.35s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in { animation: fadeIn 0.4s ease both; }
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+.floaty { animation: floaty 4s ease-in-out infinite; }
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.pulse-dot { animation: pulseDot 1.4s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes flyToCart {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--fx), var(--fy)) scale(0.2); opacity: 0; }
+}
+
+/* courier moving along the route */
+@keyframes ride {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+.courier {
+  offset-path: path("M 24 168 C 90 60, 180 60, 220 120 S 330 200, 392 96");
+  offset-rotate: 0deg;
+  transition: offset-distance 0.12s linear;
+}
+
+.stagger > * { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.07s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.17s; }
+.stagger > *:nth-child(5) { animation-delay: 0.22s; }
+.stagger > *:nth-child(6) { animation-delay: 0.27s; }
+.stagger > *:nth-child(7) { animation-delay: 0.32s; }
+
+.no-tap { -webkit-tap-highlight-color: transparent; user-select: none; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* DRY brand gradient */
+.bg-grad { background-image: linear-gradient(135deg, #ffb547, #ff8a5c); }
+.shadow-grad { box-shadow: 0 18px 40px -12px rgba(255, 138, 92, 0.6); }
+.text-grad {
+  background-image: linear-gradient(135deg, #ffce6b, #ff8a5c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
