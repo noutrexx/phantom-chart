@@ -357,7 +357,8 @@ function ProductSheet({
 
   return (
     <div className="fixed inset-0 z-40 bg-black/35 flex items-end" onClick={onClose}>
-      <div className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[90%] overflow-y-auto shadow-lift fade-up" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[90%] flex flex-col shadow-lift fade-up" onClick={(e) => e.stopPropagation()}>
+        <div className="overflow-y-auto">
         <div className="relative h-52">
           <FoodImage src={foodImg(item.photo, `${item.id}-sheet`, 720, 460)} alt={item.name} className="absolute inset-0 rounded-t-3xl" gradient={restaurant.gradient} />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/72 to-transparent" />
@@ -370,7 +371,7 @@ function ProductSheet({
           </div>
         </div>
 
-        <div className="px-5 pt-4 pb-6">
+        <div className="px-5 pt-4 pb-4">
           <p className="text-[13.5px] text-[var(--color-ink-2)] leading-snug">{item.desc}</p>
 
           {groups.map((g) => (
@@ -416,24 +417,25 @@ function ProductSheet({
               className="mt-2 w-full h-20 resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-3 text-[13.5px] outline-none focus:border-[var(--color-ink)]"
             />
           </div>
+        </div>
+        </div>
 
-          <div className="mt-5 flex items-center gap-3">
-            <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1">
-              <button onClick={() => setQty((value) => Math.max(1, value - 1))} className="w-9 h-9 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
-                <Minus size={17} className="text-[var(--color-ink)]" />
-              </button>
-              <span className="w-8 text-center text-[15px] font-extrabold tabular-nums">{qty}</span>
-              <button onClick={() => setQty((value) => value + 1)} className="w-9 h-9 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
-                <Plus size={17} className="text-white" />
-              </button>
-            </div>
-            <PrimaryButton onClick={handleAdd} className="flex-1">
-              <span className="flex items-center justify-between w-full">
-                <span>Add to cart</span>
-                <span className="tabular-nums">${lineTotal.toFixed(2)}</span>
-              </span>
-            </PrimaryButton>
+        <div className="shrink-0 border-t border-[var(--color-line)] px-5 py-3 flex items-center gap-3">
+          <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1">
+            <button onClick={() => setQty((value) => Math.max(1, value - 1))} className="w-9 h-9 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
+              <Minus size={17} className="text-[var(--color-ink)]" />
+            </button>
+            <span className="w-8 text-center text-[15px] font-extrabold tabular-nums">{qty}</span>
+            <button onClick={() => setQty((value) => value + 1)} className="w-9 h-9 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
+              <Plus size={17} className="text-white" />
+            </button>
           </div>
+          <PrimaryButton onClick={handleAdd} className="flex-1">
+            <span className="flex items-center justify-between w-full">
+              <span>Add to cart</span>
+              <span className="tabular-nums">${lineTotal.toFixed(2)}</span>
+            </span>
+          </PrimaryButton>
         </div>
       </div>
     </div>

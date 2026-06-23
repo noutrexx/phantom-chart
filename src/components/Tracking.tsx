@@ -114,21 +114,8 @@ export default function Tracking({
           </div>
         </div>
 
-        <div className="absolute left-4 bottom-5 right-4 rounded-2xl bg-white/95 backdrop-blur shadow-card p-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-ink)] grid place-items-center">
-              <Bike size={20} className="text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[13.5px] font-extrabold tracking-tight">Echo is en route</p>
-              <p className="text-[12px] text-[var(--color-ink-2)] truncate">Restaurant to Your couch - phantom route active</p>
-            </div>
-            <span className="text-[12px] font-extrabold text-[var(--color-green-ink)] tabular-nums">{minsLeft} min</span>
-          </div>
-        </div>
-
         {event && (
-          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[88%] fade-up">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] fade-up">
             <div className="flex items-center gap-3 rounded-2xl bg-white shadow-card px-4 py-3">
               <span className="rounded-full bg-[var(--color-soft)] px-2 py-1 text-[11px] font-extrabold">{event.icon}</span>
               <span className="text-[12.5px] text-[var(--color-ink)] leading-snug">{event.text}</span>
