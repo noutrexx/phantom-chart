@@ -49,7 +49,16 @@ export function useOrders() {
     });
   }, []);
 
+  const rateOrder = useCallback((id: string, rating: number, review: string) => {
+    setOrders((prev) => {
+      const cleanReview = review.trim().slice(0, 180);
+      const next = prev.map((o) => (o.id === id ? { ...o, rating, review: cleanReview } : o));
+      write(next);
+      return next;
+    });
+  }, []);
+
   const getOrder = useCallback((id: string | null) => orders.find((o) => o.id === id) ?? null, [orders]);
 
-  return { orders, activeOrder, placeOrder, markDelivered, getOrder };
+  return { orders, activeOrder, placeOrder, markDelivered, rateOrder, getOrder };
 }

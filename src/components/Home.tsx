@@ -14,7 +14,6 @@ import {
   Search,
   Sliders,
   Star,
-  Tag,
   VolumeOff,
   VolumeOn,
   X,
@@ -29,31 +28,7 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "free", label: "Free delivery" },
 ];
 
-const DEALS = [
-  {
-    title: "$0 comfort fee",
-    copy: "Build the cart, skip the charge.",
-    accent: "bg-[var(--color-green)]",
-  },
-  {
-    title: "Late-night save streak",
-    copy: "Beat one craving and keep the run alive.",
-    accent: "bg-[var(--color-amber)]",
-  },
-  {
-    title: "Top phantom picks",
-    copy: "High intent, zero checkout damage.",
-    accent: "bg-[var(--color-red)]",
-  },
-];
-
 const COUPONS = ["ZEROHERO", "NOBILL", "CARTZEN", "SKIP100"];
-
-const BADGES = [
-  { label: "Zero Dollar Hero", need: 1 },
-  { label: "Cart Master", need: 3 },
-  { label: "Late Night Saver", need: 5 },
-];
 
 export default function Home({
   savings,
@@ -169,7 +144,11 @@ export default function Home({
         </div>
       </div>
 
-      <div className="flex gap-5 overflow-x-auto hide-scroll px-5 pt-4 pb-1">
+      <div className="px-5 pt-4">
+        <HomeHero savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} />
+      </div>
+
+      <div className="flex gap-3 overflow-x-auto hide-scroll px-5 pt-4 pb-1">
         {CATEGORIES.map((c) => {
           const on = cat === c.key;
           return (
@@ -179,20 +158,18 @@ export default function Home({
                 feedback.tap();
                 setCat(c.key);
               }}
-              className="shrink-0 flex flex-col items-center gap-1.5 active:scale-95 transition"
+              className={`shrink-0 h-11 rounded-full border px-3.5 flex items-center gap-2 active:scale-95 transition ${
+                on ? "bg-[var(--color-ink)] border-[var(--color-ink)] text-white" : "bg-[var(--color-surface)] border-[var(--color-line)] text-[var(--color-ink)]"
+              }`}
             >
-              <div className={`w-14 h-14 rounded-2xl grid place-items-center text-[26px] transition ${on ? "bg-[var(--color-ink)]" : "bg-[var(--color-soft)]"}`}>
-                <span>{c.emoji}</span>
-              </div>
-              <span className={`text-[12px] ${on ? "font-bold text-[var(--color-ink)]" : "font-medium text-[var(--color-ink-2)]"}`}>
-                {c.label}
-              </span>
+              <span className="text-[19px] leading-none">{c.emoji}</span>
+              <span className="text-[13px] font-extrabold whitespace-nowrap">{c.label}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="flex gap-2 overflow-x-auto hide-scroll px-5 pt-4">
+      <div className="flex gap-2 overflow-x-auto hide-scroll px-5 pt-3">
         <span className="shrink-0 h-9 px-3 rounded-full bg-[var(--color-soft)] text-[var(--color-ink)] flex items-center gap-1.5 text-[13px] font-bold">
           <Sliders size={15} />
           Filters
@@ -216,18 +193,6 @@ export default function Home({
       </div>
 
       <div className="px-5 mt-4">
-        <DealCarousel />
-      </div>
-
-      <div className="px-5 mt-3">
-        <SavingsStrip savings={savings} liveStreak={liveStreak} />
-      </div>
-
-      <div className="px-5 mt-3">
-        <RewardPanel savings={savings} liveStreak={liveStreak} coupon={coupon} onSpin={spinCoupon} />
-      </div>
-
-      <div className="px-5 mt-5">
         <div className="flex items-end justify-between gap-3 mb-3">
           <div>
             <h2 className="text-[20px] font-extrabold tracking-tight">{heading}</h2>
@@ -235,9 +200,9 @@ export default function Home({
               {list.length} place{list.length === 1 ? "" : "s"} available now
             </p>
           </div>
-          <span className="shrink-0 text-[12px] font-bold text-[var(--color-green-ink)]">Sorted by crave score</span>
+          <span className="shrink-0 rounded-full bg-[var(--color-green)]/10 px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--color-green-ink)]">Crave score</span>
         </div>
-        <div className="flex flex-col gap-6 stagger">
+        <div className="flex flex-col gap-5 stagger">
           {list.map((r, index) => (
             <RestaurantCard key={r.id} r={r} rank={index + 1} onOpen={() => onOpen(r.id)} fav={isFavorite(r.id)} onToggleFav={() => onToggleFavorite(r.id)} />
           ))}
@@ -255,7 +220,7 @@ export default function Home({
   );
 }
 
-function RewardPanel({
+function HomeHero({
   savings,
   liveStreak,
   coupon,
@@ -266,74 +231,41 @@ function RewardPanel({
   coupon: string;
   onSpin: () => void;
 }) {
-  const missionDone = savings.lastOrderDate === new Date().toISOString().slice(0, 10);
-  const nextBadge = BADGES.find((badge) => savings.orders < badge.need) ?? BADGES[BADGES.length - 1];
-  const progress = Math.min(1, savings.orders / nextBadge.need);
-
   return (
-    <div className="rounded-xl bg-[var(--color-ink)] text-white p-4 shadow-lift">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Reward loop</p>
-          <h2 className="mt-1 text-[20px] font-extrabold tracking-tight">Craving defeated</h2>
-          <p className="mt-1 text-[12.5px] text-white/70">
-            {missionDone ? "Daily mission complete. Come back tomorrow for the next save." : "Place one phantom order today to lock the mission."}
-          </p>
+    <div className="rounded-[18px] bg-[var(--color-ink)] text-white p-4 shadow-lift overflow-hidden relative">
+      <div className="absolute right-0 top-0 h-full w-32 bg-[var(--color-green)]/22" />
+      <div className="relative">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Phantom Eats</p>
+            <h1 className="mt-1 text-[25px] font-extrabold tracking-tight leading-tight">Eat the idea. Keep the money.</h1>
+            <p className="mt-1.5 text-[13px] text-white/70 leading-snug">Browse real-looking cravings, place fake orders, and win the dopamine loop without checkout.</p>
+          </div>
+          <div className="shrink-0 rounded-2xl bg-white text-[var(--color-ink)] px-3 py-2 text-right">
+            <p className="text-[18px] font-extrabold tabular-nums leading-none">${savings.totalSaved.toFixed(0)}</p>
+            <p className="text-[10px] font-bold text-[var(--color-ink-3)] mt-1">saved</p>
+          </div>
         </div>
-        <div className="text-right shrink-0">
-          <p className="text-[22px] font-extrabold tabular-nums leading-none">{liveStreak}</p>
-          <p className="text-[10.5px] text-white/55 font-bold">streak</p>
-        </div>
-      </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        {BADGES.map((badge) => {
-          const earned = savings.orders >= badge.need;
-          return (
-            <div key={badge.label} className={`rounded-xl px-2.5 py-3 ${earned ? "bg-white text-[var(--color-ink)]" : "bg-white/10 text-white/68"}`}>
-              <p className="text-[11px] font-extrabold leading-tight">{badge.label}</p>
-              <p className="mt-1 text-[10.5px] font-bold tabular-nums">{earned ? "Earned" : `${Math.max(0, badge.need - savings.orders)} left`}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="mt-4">
-        <div className="flex items-center justify-between text-[11.5px] font-bold text-white/64">
-          <span>Next badge</span>
-          <span className="tabular-nums">
-            {savings.orders}/{nextBadge.need}
-          </span>
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <HeroStat value={String(savings.orders)} label="orders" />
+          <HeroStat value={`${liveStreak}x`} label="streak" />
+          <HeroStat value={coupon} label="coupon" />
         </div>
-        <div className="mt-2 h-2 rounded-full bg-white/12 overflow-hidden">
-          <div className="h-full rounded-full bg-[var(--color-green)] transition-[width] duration-300" style={{ width: `${progress * 100}%` }} />
-        </div>
-      </div>
 
-      <button onClick={onSpin} className="mt-4 w-full rounded-xl bg-white text-[var(--color-ink)] px-4 py-3 flex items-center justify-between active:scale-[0.98] transition">
-        <span className="text-[13px] font-extrabold">Spin fake coupon</span>
-        <span className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-[12px] font-extrabold tracking-wide">{coupon}</span>
-      </button>
+        <button onClick={onSpin} className="mt-3 h-10 w-full rounded-xl bg-white text-[var(--color-ink)] text-[13px] font-extrabold active:scale-[0.98] transition">
+          Spin fake coupon
+        </button>
+      </div>
     </div>
   );
 }
 
-function DealCarousel() {
+function HeroStat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex gap-3 overflow-x-auto hide-scroll">
-      {DEALS.map((deal) => (
-        <div key={deal.title} className="shrink-0 w-[82%] rounded-2xl bg-[var(--color-ink)] text-white p-4 shadow-lift overflow-hidden relative">
-          <div className={`absolute -right-8 -top-8 w-28 h-28 rounded-full ${deal.accent} opacity-95`} />
-          <div className="relative">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-2.5 py-1 text-[11px] font-bold">
-              <Tag size={12} />
-              Tonight's Phantom Deal
-            </span>
-            <h3 className="mt-3 text-[21px] font-extrabold tracking-tight leading-tight">{deal.title}</h3>
-            <p className="mt-1.5 text-[13px] text-white/72 leading-snug max-w-[14rem]">{deal.copy}</p>
-          </div>
-        </div>
-      ))}
+    <div className="rounded-xl bg-white/10 px-2.5 py-2">
+      <p className="text-[14px] font-extrabold tabular-nums leading-none truncate">{value}</p>
+      <p className="text-[10px] text-white/55 font-bold mt-1">{label}</p>
     </div>
   );
 }
@@ -374,7 +306,7 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
           <div className="min-w-0">
             <h3 className="text-[17px] font-extrabold tracking-tight leading-tight truncate">{r.name}</h3>
             <p className="text-[13.5px] text-[var(--color-ink-2)] mt-0.5 truncate">
-              {r.category} · {r.priceLevel} · {r.distanceKm} km
+              {r.category} / {r.priceLevel} / {r.distanceKm} km
             </p>
           </div>
           <span className="shrink-0 flex items-center gap-1 bg-[var(--color-soft)] rounded-full px-2 py-1">
@@ -412,40 +344,6 @@ function FloatingCart({ count, subtotal, onCart }: { count: number; subtotal: nu
         </span>
         <span className="text-[15px] font-bold tabular-nums">${subtotal.toFixed(2)}</span>
       </button>
-    </div>
-  );
-}
-
-function SavingsStrip({ savings, liveStreak }: { savings: Savings; liveStreak: number }) {
-  const fresh = savings.orders === 0;
-  return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-soft p-3.5 flex items-center gap-3">
-      <div className="w-11 h-11 rounded-xl bg-[var(--color-green)]/12 grid place-items-center text-[22px]">
-        {liveStreak > 0 ? "🔥" : "💸"}
-      </div>
-      <div className="flex-1 min-w-0">
-        {fresh ? (
-          <>
-            <p className="text-[14px] font-bold tracking-tight">Your wallet is full</p>
-            <p className="text-[12.5px] text-[var(--color-ink-2)]">Order nothing tonight and keep it that way.</p>
-          </>
-        ) : (
-          <>
-            <p className="text-[14px] font-bold tracking-tight">
-              <span className="text-[var(--color-green-ink)] tabular-nums">${savings.totalSaved.toFixed(2)}</span> saved by not ordering
-            </p>
-            <p className="text-[12.5px] text-[var(--color-ink-2)] tabular-nums">
-              {savings.totalKcal.toLocaleString()} kcal avoided · {savings.orders} phantom order{savings.orders === 1 ? "" : "s"}
-            </p>
-          </>
-        )}
-      </div>
-      {liveStreak > 0 && (
-        <div className="text-center shrink-0">
-          <div className="text-[18px] font-extrabold tabular-nums leading-none">{liveStreak}</div>
-          <div className="text-[10px] text-[var(--color-ink-3)] font-medium">streak</div>
-        </div>
-      )}
     </div>
   );
 }

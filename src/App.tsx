@@ -35,7 +35,7 @@ export default function App() {
 
   const { cart, count, subtotal, addItem, addLine, setQty, clear } = useCart();
   const { savings, liveStreak, recordOrder } = useSavings();
-  const { orders, activeOrder, placeOrder: recordOrderHistory, markDelivered, getOrder } = useOrders();
+  const { orders, activeOrder, placeOrder: recordOrderHistory, markDelivered, rateOrder, getOrder } = useOrders();
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
 
   const active: Restaurant | null = useMemo(() => RESTAURANTS.find((r) => r.id === activeId) ?? null, [activeId]);
@@ -126,7 +126,15 @@ export default function App() {
                 />
               )}
               {tab === "orders" && (
-                <Orders orders={orders} onReorder={reorder} onOpenActive={(o) => { setTrackingOrderId(o.id); setScreen("tracking"); }} />
+                <Orders
+                  orders={orders}
+                  onReorder={reorder}
+                  onOpenActive={(o) => {
+                    setTrackingOrderId(o.id);
+                    setScreen("tracking");
+                  }}
+                  onRate={rateOrder}
+                />
               )}
               {tab === "rewards" && <Rewards savings={savings} liveStreak={liveStreak} />}
               {tab === "account" && (

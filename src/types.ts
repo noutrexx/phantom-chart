@@ -77,6 +77,8 @@ export type Order = {
   etaMin: number; // real delivery minutes
   outcome: OrderOutcome;
   status: "active" | "delivered";
+  rating?: number;
+  review?: string;
 };
 
 export type Screen = "splash" | "home" | "restaurant" | "cart" | "tracking";
