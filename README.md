@@ -1,23 +1,23 @@
 # Phantom Eats
 
-A dopamine site: order the feeling, never the food.
+A dopamine food-delivery simulation: order the feeling, never the food.
 
-Inspired by the South Korean dopamine-site trend, Phantom Eats is a fake food-delivery
-app where you go through the entire ritual: browse menus, read reviews, fill a cart,
-"place" an order, and watch a courier ride toward your couch on a live map, except
-nothing is ever actually ordered. No payments, no account, no bill. The journey *is*
-the product, and your wallet stays full.
+Phantom Eats looks and behaves like a polished delivery app, but it never places a
+real order, collects payment, or asks for an account. The user gets the full
+ritual: browse restaurants, search cravings, build a cart, check out for $0.00,
+track a courier, and unlock a reward for not spending money.
 
-> This is a simulation. No real orders, no payments, ever.
+> Simulation only. No real orders, no payments, no accounts.
 
-## Features
+## Experience
 
-- **Full fake-delivery funnel**: Splash -> Home -> Restaurant (menu/reviews) -> Cart -> Tracking -> Reveal
-- **"You will pay $0.00"** checkout gag with a satisfying, frictionless flow
-- **Savings wallet + night streak**: persists how much money & calories you "saved" by not ordering (localStorage)
-- **Sound + haptics**: synthesized Web Audio feedback and vibration, with a mute toggle (respects `prefers-reduced-motion`)
-- **Variable courier outcomes**: the ride randomly resolves as normal / early / lost / a surprise free dessert, so it never feels the same twice
-- **Mobile-first** phone-frame UI, zero image assets (emoji-based)
+- **Marketplace home**: search, cuisine categories, offer filters, campaign cards, rewards, and bottom navigation.
+- **Restaurant pages**: hero imagery, menu sections, most-ordered carousel, reviews, and item detail sheets.
+- **Checkout flow**: delivery address, ETA, handoff options, priority toggle, promo code, fake payment, and savings summary.
+- **Live tracking**: map route, ETA metrics, current status, courier card, call/message actions, and variable outcomes.
+- **Dopamine loop**: wallet savings, calorie avoidance, night streak, badges, fake coupon spin, confetti, and achievement reveal.
+- **Persistence**: savings and streak state are stored in `localStorage`.
+- **Feedback**: Web Audio and vibration feedback, with a mute control and reduced-motion support.
 
 ## Tech
 
@@ -27,22 +27,45 @@ React + Vite + TypeScript + Tailwind CSS v4.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev
 npm run build
 ```
 
-## Project structure
+Local dev server:
 
+```text
+http://localhost:5173
 ```
+
+## Project Structure
+
+```text
 src/
-  App.tsx              # screen state machine
-  data.ts              # restaurants / menus / reviews
-  types.ts
+  App.tsx                 screen state machine
+  data.ts                 restaurants, menus, reviews, imagery
+  types.ts                shared domain types
   hooks/
-    useCart.ts         # cart reducer
-    useSavings.ts      # persisted savings + streak
+    useCart.ts            cart reducer
+    useSavings.ts         persisted savings and streak state
   lib/
-    feedback.ts        # sound + haptics
+    feedback.ts           sound and haptics
+    img.ts                remote food image URLs
   components/
-    Splash, Home, RestaurantView, Cart, Tracking, PrimaryButton
+    Splash.tsx
+    Home.tsx
+    RestaurantView.tsx
+    Cart.tsx
+    Tracking.tsx
+    PrimaryButton.tsx
+    FoodImage.tsx
+    StatusBar.tsx
+    icons.tsx
+```
+
+## Quality Checks
+
+Use this before publishing changes:
+
+```bash
+npm run build
 ```
