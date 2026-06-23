@@ -55,4 +55,28 @@ export type CartLine = {
   note?: string;
 };
 
+export type OrderOutcome = "normal" | "early" | "lost" | "gift";
+
+export type OrderItem = {
+  id: string;
+  name: string;
+  photo: string;
+  qty: number;
+  unitPrice: number;
+  selections?: string[];
+};
+
+export type Order = {
+  id: string;
+  restaurantId: string;
+  restaurantName: string;
+  restaurantPhoto: string;
+  items: OrderItem[];
+  subtotal: number;
+  placedAt: number; // epoch ms
+  etaMin: number; // real delivery minutes
+  outcome: OrderOutcome;
+  status: "active" | "delivered";
+};
+
 export type Screen = "splash" | "home" | "restaurant" | "cart" | "tracking";

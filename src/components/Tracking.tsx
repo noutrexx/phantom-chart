@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import type { Restaurant } from "../types";
+import type { Order, Restaurant } from "../types";
 import type { Savings } from "../hooks/useSavings";
 import PrimaryButton from "./PrimaryButton";
 import { feedback } from "../lib/feedback";
-import { Bike, Check, Clock, Message, Phone, Pin, Star } from "./icons";
+import { Bike, Check, ChevronDown, Clock, Message, Phone, Pin, Star } from "./icons";
 
 type Outcome = "normal" | "early" | "lost" | "gift";
 
@@ -29,44 +29,46 @@ const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string 
   gift: { emoji: "🍮", title: "Nothing arrived - plus a free dessert.", line: "Two things that do not exist. Twice the comfort." },
 };
 
-function pickOutcome(): Outcome {
-  const r = Math.random();
-  if (r < 0.4) return "normal";
-  if (r < 0.6) return "early";
-  if (r < 0.8) return "lost";
-  return "gift";
-}
-
 export default function Tracking({
+  order,
   restaurant,
-  saved,
   savings,
   liveStreak,
+  onMinimize,
+  onDelivered,
   onAgain,
 }: {
+  order: Order;
   restaurant: Restaurant;
-  saved: number;
   savings: Savings;
   liveStreak: number;
+  onMinimize: () => void;
+  onDelivered: () => void;
   onAgain: () => void;
 }) {
-  const [outcome] = useState<Outcome>(pickOutcome);
-  const rideMs = outcome === "early" ? 9000 : outcome === "lost" ? 16000 : 13000;
-  const [elapsed, setElapsed] = useState(0);
-  const [done, setDone] = useState(false);
+  const outcome: Outcome = order.outcome;
+  const durationMs = order.etaMin * 60000;
+  const [now, setNow] = useState(Date.now());
   const [event, setEvent] = useState<{ icon: string; text: string } | null>(null);
   const lastStep = useRef(-1);
   const eventFired = useRef(false);
+  const deliveredRef = useRef(false);
 
+  const elapsed = now - order.placedAt;
+  const progress = Math.min(1, elapsed / durationMs);
+  const done = progress >= 1;
+
+  // Timestamp-driven so the real ETA keeps counting even if you leave and
+  // come back (the interval only ticks the clock; progress derives from time).
   useEffect(() => {
+    if (done) return;
     const ev = EVENTS[outcome];
-    const startT = performance.now();
     const id = window.setInterval(() => {
-      const e = performance.now() - startT;
-      const p = Math.min(1, e / rideMs);
-      setElapsed(e);
+      const e = Date.now() - order.placedAt;
+      const p = Math.min(1, e / durationMs);
+      setNow(Date.now());
 
-      if (ev && !eventFired.current && p >= ev.at) {
+      if (ev && !eventFired.current && p >= ev.at && p < 1) {
         eventFired.current = true;
         setEvent({ icon: ev.icon, text: ev.text });
         if (outcome === "gift") feedback.surprise();
@@ -80,23 +82,25 @@ export default function Tracking({
         if (st > 0) feedback.tap();
       }
 
-      if (e >= rideMs) {
-        setElapsed(rideMs);
-        setDone(true);
-        feedback.arrive();
-        window.clearInterval(id);
-      }
-    }, 100);
+      if (e >= durationMs) window.clearInterval(id);
+    }, 1000);
     return () => window.clearInterval(id);
-  }, [rideMs, outcome]);
+  }, [order.placedAt, durationMs, outcome, done]);
 
-  const progress = Math.min(1, elapsed / rideMs);
+  useEffect(() => {
+    if (done && !deliveredRef.current) {
+      deliveredRef.current = true;
+      feedback.arrive();
+      onDelivered();
+    }
+  }, [done, onDelivered]);
+
   const step = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length));
-  const minsLeft = Math.max(1, Math.ceil(restaurant.etaMin * (1 - progress)));
+  const minsLeft = Math.max(1, Math.ceil((durationMs - elapsed) / 60000));
   const activeStep = STEPS[step];
 
   if (done) {
-    return <Reveal restaurant={restaurant} saved={saved} savings={savings} liveStreak={liveStreak} outcome={outcome} onAgain={onAgain} />;
+    return <Reveal restaurant={restaurant} saved={order.subtotal} savings={savings} liveStreak={liveStreak} outcome={outcome} onAgain={onAgain} />;
   }
 
   return (
@@ -105,9 +109,14 @@ export default function Tracking({
         <MapArt progress={progress} />
 
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-soft">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] pulse-dot" />
-            <span className="text-[11.5px] font-bold tracking-tight">Live tracking</span>
+          <div className="flex items-center gap-2">
+            <button onClick={onMinimize} aria-label="Minimize" className="w-9 h-9 rounded-full bg-white grid place-items-center shadow-soft active:scale-90 transition">
+              <ChevronDown size={20} className="text-[var(--color-ink)]" />
+            </button>
+            <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-soft">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] pulse-dot" />
+              <span className="text-[11.5px] font-bold tracking-tight">Live tracking</span>
+            </div>
           </div>
           <div className="bg-white rounded-full px-3 py-1.5 shadow-soft text-[11.5px] font-extrabold tabular-nums">
             {Math.round(progress * 100)}%
