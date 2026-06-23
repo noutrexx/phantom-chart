@@ -26,6 +26,11 @@ export const Search = (p: P) => (
     <path d="m20 20-3-3" />
   </S>
 );
+export const X = (p: P) => (
+  <S {...p}>
+    <path d="M18 6 6 18M6 6l12 12" />
+  </S>
+);
 export const Pin = (p: P) => (
   <S {...p}>
     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
@@ -85,6 +90,51 @@ export const Heart = ({ className, size = 18 }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
     <path d="M12 20s-7-4.35-7-9.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7 3.5C19 15.65 12 20 12 20Z" />
   </svg>
+);
+export const HomeIcon = (p: P) => (
+  <S {...p}>
+    <path d="m3 11 9-8 9 8" />
+    <path d="M5 10v10h14V10" />
+    <path d="M10 20v-6h4v6" />
+  </S>
+);
+export const Compass = (p: P) => (
+  <S {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z" />
+  </S>
+);
+export const Trophy = (p: P) => (
+  <S {...p}>
+    <path d="M8 4h8v4a4 4 0 0 1-8 0V4Z" />
+    <path d="M8 6H5a3 3 0 0 0 3 3M16 6h3a3 3 0 0 1-3 3" />
+    <path d="M12 12v4M9 20h6M10 16h4" />
+  </S>
+);
+export const Receipt = (p: P) => (
+  <S {...p}>
+    <path d="M7 3h10v18l-2-1.2-2 1.2-2-1.2-2 1.2-2-1.2V3Z" />
+    <path d="M9 8h6M9 12h6M9 16h4" />
+  </S>
+);
+export const User = (p: P) => (
+  <S {...p}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21a8 8 0 0 1 16 0" />
+  </S>
+);
+export const Tag = (p: P) => (
+  <S {...p}>
+    <path d="M20 13 13 20 4 11V4h7l9 9Z" />
+    <circle cx="8.5" cy="8.5" r="1.5" />
+  </S>
+);
+export const Sliders = (p: P) => (
+  <S {...p}>
+    <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
+    <circle cx="16" cy="7" r="2" />
+    <circle cx="8" cy="17" r="2" />
+  </S>
 );
 export const Check = (p: P) => (
   <S {...p}>
