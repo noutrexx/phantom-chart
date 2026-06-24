@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/banner.svg" alt="Phantom Eats banner" width="100%" />
+  <img src="assets/banner.png" alt="Phantom Eats banner" width="100%" />
 
   <br />
 
@@ -134,7 +134,7 @@ src/
 docs/
   screenshots/            README gallery images
 assets/
-  banner.svg              README header artwork
+  banner.png              README header artwork
 ```
 
 ---
