@@ -18,3 +18,8 @@ Thumbs.db
 
 # vite cache
 .vite/
+
+# test artifacts
+playwright-report/
+test-results/
+tmp-playwright-debug.png

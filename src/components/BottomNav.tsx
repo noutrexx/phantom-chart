@@ -28,6 +28,8 @@ export default function BottomNav({
             <button
               key={item.key}
               onClick={() => onTab(item.key)}
+              aria-label={item.label}
+              aria-current={active ? "page" : undefined}
               className={`relative h-14 flex flex-col items-center justify-center gap-0.5 active:scale-95 transition ${
                 active ? "text-[var(--color-ink)]" : "text-[var(--color-ink-3)]"
               }`}

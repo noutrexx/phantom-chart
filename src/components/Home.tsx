@@ -117,7 +117,7 @@ export default function Home({
     <div className="h-full overflow-y-auto pb-40 bg-[var(--color-bg)]">
       <div className="sticky top-0 z-20 bg-[var(--color-bg)]/95 backdrop-blur border-b border-[var(--color-line)] px-5 pt-3 pb-3">
         <div className="flex items-center justify-between">
-          <button className="flex items-center gap-1.5 active:opacity-60 transition">
+          <button className="flex items-center gap-1.5 active:opacity-60 transition" aria-label="Change delivery location">
             <Pin size={18} className="text-[var(--color-ink)]" />
             <span className="text-[16px] font-extrabold tracking-tight">Your couch</span>
             <ChevronDown size={16} className="text-[var(--color-ink-2)]" />
@@ -315,24 +315,14 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
   const fast = r.etaMin < 21;
 
   return (
-    <button onClick={onOpen} className="block w-full text-left active:opacity-95 transition">
+    <div className="relative">
+      <button onClick={onOpen} aria-label={`Open ${r.name}`} className="block w-full text-left active:opacity-95 transition">
       <div className="rounded-[18px] border border-[var(--color-line)] bg-[var(--color-surface)] shadow-soft overflow-hidden">
       <div className="relative overflow-hidden aspect-[16/9]">
         <FoodImage src={foodImg(r.photo, r.id, 720, 460)} alt={r.name} className="absolute inset-0" gradient={r.gradient} />
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/34 to-transparent" />
         <span className="absolute top-3 left-3 bg-white text-[11.5px] font-extrabold rounded-full px-2.5 py-1.5 shadow-soft tabular-nums">
           #{rank} near you
-        </span>
-        <span
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFav();
-          }}
-          role="button"
-          aria-label={fav ? "Remove favorite" : "Save"}
-          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur grid place-items-center shadow-soft active:scale-90 transition cursor-pointer"
-        >
-          <Heart size={18} className={fav ? "text-[var(--color-red)] fill-current" : "text-[var(--color-ink)]"} />
         </span>
         <span className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white rounded-full pl-2 pr-3 py-1.5 shadow-soft">
           <Clock size={14} className="text-[var(--color-ink)]" />
@@ -365,6 +355,14 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
       </div>
       </div>
     </button>
+      <button
+        onClick={onToggleFav}
+        aria-label={fav ? `Remove ${r.name} from favorites` : `Save ${r.name}`}
+        className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur grid place-items-center shadow-soft active:scale-90 transition"
+      >
+        <Heart size={18} className={fav ? "text-[var(--color-red)] fill-current" : "text-[var(--color-ink)]"} />
+      </button>
+    </div>
   );
 }
 

@@ -32,7 +32,7 @@ export default function Cart({
   return (
     <div className="h-full flex flex-col bg-[var(--color-bg)]">
       <div className="shrink-0 px-5 pt-2 pb-3 flex items-center gap-3 border-b border-[var(--color-line)]">
-        <button onClick={onBack} className="w-9 h-9 -ml-1 rounded-full grid place-items-center active:bg-[var(--color-soft)] transition">
+        <button onClick={onBack} aria-label="Go back" className="w-9 h-9 -ml-1 rounded-full grid place-items-center active:bg-[var(--color-soft)] transition">
           <ChevronLeft size={24} className="text-[var(--color-ink)]" />
         </button>
         <div className="flex-1 min-w-0">
@@ -155,11 +155,11 @@ function CartLineRow({ line, onQty }: { line: CartLine; onQty: (id: string, delt
         <p className="text-[13.5px] font-semibold text-[var(--color-ink-2)] mt-0.5 tabular-nums">${(line.unitPrice * line.qty).toFixed(2)}</p>
       </div>
       <div className="flex items-center gap-1 border border-[var(--color-line-2)] rounded-full p-1 self-start">
-        <button onClick={() => onQty(line.lineId, -1)} className="w-7 h-7 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
+        <button onClick={() => onQty(line.lineId, -1)} aria-label={`Decrease ${line.item.name}`} className="w-7 h-7 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
           <Minus size={16} className="text-[var(--color-ink)]" />
         </button>
         <span className="w-5 text-center text-[14px] font-bold tabular-nums">{line.qty}</span>
-        <button onClick={() => onQty(line.lineId, 1)} className="w-7 h-7 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
+        <button onClick={() => onQty(line.lineId, 1)} aria-label={`Increase ${line.item.name}`} className="w-7 h-7 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
           <Plus size={16} className="text-white" />
         </button>
       </div>

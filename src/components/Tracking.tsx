@@ -110,7 +110,7 @@ export default function Tracking({
 
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <button onClick={onMinimize} aria-label="Minimize" className="w-9 h-9 rounded-full bg-white grid place-items-center shadow-soft active:scale-90 transition">
+            <button onClick={onMinimize} aria-label="Minimize tracking" className="w-9 h-9 rounded-full bg-white grid place-items-center shadow-soft active:scale-90 transition">
               <ChevronDown size={20} className="text-[var(--color-ink)]" />
             </button>
             <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-soft">

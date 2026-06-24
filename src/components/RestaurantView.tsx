@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CartLine, MenuItem, OptionGroup, Restaurant } from "../types";
 import { feedback } from "../lib/feedback";
 import { foodImg } from "../lib/img";
@@ -110,6 +110,8 @@ export default function RestaurantView({
             <button
               key={t}
               onClick={() => setTab(t)}
+              role="tab"
+              aria-selected={tab === t}
               className={`pb-3 pt-1 text-[14px] font-bold capitalize border-b-2 -mb-px transition ${
                 tab === t ? "border-[var(--color-ink)] text-[var(--color-ink)]" : "border-transparent text-[var(--color-ink-3)]"
               }`}
@@ -325,6 +327,16 @@ function ProductSheet({
   const [multiSel, setMultiSel] = useState<Record<string, string[]>>({});
   const [qty, setQty] = useState(1);
   const [note, setNote] = useState("");
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    sheetRef.current?.focus();
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
 
   function choiceDelta(g: OptionGroup, id: string) {
     return g.choices.find((c) => c.id === id)?.delta ?? 0;
@@ -383,7 +395,15 @@ function ProductSheet({
 
   return (
     <div className="fixed inset-0 z-40 bg-black/35 flex items-end" onClick={onClose}>
-      <div className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[88%] flex flex-col shadow-lift fade-up" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={sheetRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="product-sheet-title"
+        tabIndex={-1}
+        className="w-full bg-[var(--color-bg)] rounded-t-3xl max-h-[88%] flex flex-col shadow-lift fade-up outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="overflow-y-auto">
           <div className="sticky top-0 z-10 flex justify-center bg-[var(--color-bg)]/95 pt-2">
             <span className="h-1.5 w-10 rounded-full bg-[var(--color-line-2)]" />
@@ -395,7 +415,7 @@ function ProductSheet({
               <X size={20} className="text-[var(--color-ink)]" />
             </button>
             <div className="absolute left-4 right-4 bottom-4 text-white">
-              <h2 className="text-[22px] font-extrabold tracking-tight leading-tight">{item.name}</h2>
+              <h2 id="product-sheet-title" className="text-[22px] font-extrabold tracking-tight leading-tight">{item.name}</h2>
               <p className="text-[13px] font-bold mt-1 tabular-nums">${item.price.toFixed(2)}</p>
             </div>
           </div>
@@ -451,11 +471,11 @@ function ProductSheet({
 
         <div className="shrink-0 border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-3 grid grid-cols-[126px_minmax(0,1fr)] items-center gap-3">
           <div className="flex items-center justify-between gap-1 border border-[var(--color-line-2)] rounded-full p-1">
-            <button onClick={() => setQty((value) => Math.max(1, value - 1))} className="w-9 h-9 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
+            <button onClick={() => setQty((value) => Math.max(1, value - 1))} aria-label="Decrease quantity" className="w-9 h-9 grid place-items-center rounded-full active:bg-[var(--color-soft)] transition">
               <Minus size={17} className="text-[var(--color-ink)]" />
             </button>
             <span className="w-8 text-center text-[15px] font-extrabold tabular-nums">{qty}</span>
-            <button onClick={() => setQty((value) => value + 1)} className="w-9 h-9 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
+            <button onClick={() => setQty((value) => value + 1)} aria-label="Increase quantity" className="w-9 h-9 grid place-items-center rounded-full bg-[var(--color-ink)] active:scale-90 transition">
               <Plus size={17} className="text-white" />
             </button>
           </div>

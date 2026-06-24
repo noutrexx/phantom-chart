@@ -176,6 +176,7 @@ Before pushing UI or documentation changes:
 
 ```bash
 npm run build
+npm run test:e2e
 git diff --check
 ```
 
