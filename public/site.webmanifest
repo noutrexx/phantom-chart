@@ -1,7 +1,7 @@
 {
   "name": "Phantom Eats",
   "short_name": "Phantom Eats",
-  "description": "A dopamine food-delivery simulation with zero real orders and zero payments.",
+  "description": "A dopamine food-delivery simulation with realistic checkout UI and no real payment processing.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

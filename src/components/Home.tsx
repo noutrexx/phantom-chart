@@ -19,16 +19,16 @@ import {
   X,
 } from "./icons";
 
-type FilterKey = "offers" | "fast" | "top" | "free";
+type FilterKey = "offers" | "fast" | "top" | "fees";
 
 const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "offers", label: "Offers" },
   { key: "fast", label: "Under 30 min" },
   { key: "top", label: "Top rated" },
-  { key: "free", label: "Free delivery" },
+  { key: "fees", label: "Low fees" },
 ];
 
-const COUPONS = ["ZEROHERO", "NOBILL", "CARTZEN", "SKIP100"];
+const COUPONS = ["CRAVE20", "CARTZEN", "VOIDPAY", "RITUAL15"];
 
 function categoryPhoto(key: string): { photo: string; gradient: string; name: string } {
   const match = key === "all" ? RESTAURANTS[0] : RESTAURANTS.find((restaurant) => restaurant.tags.includes(key));
@@ -311,7 +311,7 @@ function HeroStat({ value, label }: { value: string; label: string }) {
 }
 
 function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; rank: number; onOpen: () => void; fav: boolean; onToggleFav: () => void }) {
-  const deal = r.rating >= 4.8 ? "Spend $0, save everything" : "$0 delivery fee";
+  const deal = r.rating >= 4.8 ? "Premium checkout ritual" : "Simulated delivery fee";
   const fast = r.etaMin < 21;
 
   return (
@@ -329,7 +329,7 @@ function RestaurantCard({ r, rank, onOpen, fav, onToggleFav }: { r: Restaurant; 
           <span className="text-[12.5px] font-bold tracking-tight">{r.etaMin}-{r.etaMin + 7} min</span>
         </span>
         <span className="absolute bottom-3 right-3 bg-[var(--color-green)] text-white text-[11.5px] font-bold rounded-full px-2.5 py-1.5">
-          Free delivery
+          Mock pay
         </span>
       </div>
       <div className="p-3">

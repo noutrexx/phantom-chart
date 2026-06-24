@@ -3,7 +3,7 @@
 
   <br />
 
-  <strong>A dopamine-first food delivery simulation built to feel real, cost nothing, and reward restraint.</strong>
+  <strong>A dopamine-first food delivery simulation with realistic checkout UI, fake authorization, and reward loops.</strong>
 
   <br />
   <br />
@@ -17,7 +17,7 @@
 
   <img alt="LocalStorage" src="https://img.shields.io/badge/Persistence-localStorage-111315?style=for-the-badge" />
   <img alt="Mobile first" src="https://img.shields.io/badge/UI-Mobile_First-06C167?style=for-the-badge" />
-  <img alt="Simulation" src="https://img.shields.io/badge/Orders-Simulation_Only-FF6B35?style=for-the-badge" />
+  <img alt="Simulation" src="https://img.shields.io/badge/Payment-Simulated-FF6B35?style=for-the-badge" />
 
   <br />
   <br />
@@ -35,11 +35,11 @@
 
 ## Overview
 
-Phantom Eats is a polished food delivery experience where the checkout ritual is the product. Users browse restaurants, customize meals, place a simulated order, track a courier-style delivery, review the experience, and collect rewards while spending **$0.00**.
+Phantom Eats is a polished food delivery experience where the checkout ritual is the product. Users browse restaurants, customize meals, enter a realistic card form, authorize a simulated payment, track a courier-style delivery, review the experience, and collect rewards.
 
-The interface borrows familiar delivery-app patterns, then flips the outcome: the craving gets satisfied through interaction, the payment stays fake, and the reward system celebrates not spending.
+The interface borrows familiar delivery-app patterns, then flips the outcome: the craving gets satisfied through interaction, the payment authorization stays local, and the reward system celebrates avoiding the real charge.
 
-> **Simulation only:** Phantom Eats does not place real orders, process payments, create accounts, or connect to restaurants.
+> **Simulation only:** Phantom Eats does not place real orders, process payments, store card data, create accounts, or connect to restaurants.
 
 ---
 
@@ -66,7 +66,7 @@ The interface borrows familiar delivery-app patterns, then flips the outcome: th
 | Marketplace Home | Photo-led restaurant feed with search, cuisine filters, top picks, promo surfaces, and quick cart access. |
 | Restaurant Detail | Hero imagery, sticky menu tabs, reviews, most-ordered highlights, and menu sections designed for scanning. |
 | Item Builder | Required and optional modifiers, notes, quantity controls, and a cart CTA with lightweight feedback. |
-| Cart Simulation | Delivery choices, fake promo theater, savings summary, and a zero-dollar checkout moment. |
+| Cart Simulation | Delivery choices, service/tax/tip math, realistic card entry, fake authorization, and payment safety copy. |
 | Order Tracking | Courier-style status timeline, ETA states, map motion, and a reveal when the fake order completes. |
 | Order Reviews | Order history with reorder actions, star ratings, and written review capture. |
 | Rewards Loop | Saved money, avoided calories, streaks, badges, fake coupons, and progress moments. |

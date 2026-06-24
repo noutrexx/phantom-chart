@@ -129,6 +129,18 @@ export const Tag = (p: P) => (
     <circle cx="8.5" cy="8.5" r="1.5" />
   </S>
 );
+export const CreditCard = (p: P) => (
+  <S {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M3 10h18M7 15h4" />
+  </S>
+);
+export const Shield = (p: P) => (
+  <S {...p}>
+    <path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z" />
+    <path d="m9 12 2 2 4-5" />
+  </S>
+);
 export const Sliders = (p: P) => (
   <S {...p}>
     <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />

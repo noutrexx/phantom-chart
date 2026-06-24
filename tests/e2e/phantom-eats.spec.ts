@@ -23,9 +23,13 @@ test.describe("Phantom Eats core flow", () => {
     await expect(page.getByRole("button", { name: /view cart/i })).toBeVisible();
     await page.getByRole("button", { name: /view cart/i }).click();
 
-    await expect(page.getByRole("heading", { name: /your order/i })).toBeVisible();
-    await expect(page.getByText("$0 due")).toBeVisible();
-    await page.getByRole("button", { name: /place phantom order/i }).click();
+    await expect(page.getByRole("heading", { name: /checkout/i })).toBeVisible();
+    await expect(page.getByText("Payment method")).toBeVisible();
+    await page.getByLabel(/card number/i).fill("4242 4242 4242 4242");
+    await page.getByLabel(/expiry/i).fill("1230");
+    await page.getByLabel(/cvc/i).fill("123");
+    await page.getByLabel(/zip/i).fill("10001");
+    await page.getByRole("button", { name: /authorize phantom payment/i }).click();
 
     await expect(page.getByText("Live tracking")).toBeVisible();
     await page.getByRole("button", { name: /minimize tracking/i }).click();

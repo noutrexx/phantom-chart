@@ -43,13 +43,13 @@ export default function Splash({ onEnter }: { onEnter: () => void }) {
             Skip the bill.
           </h1>
           <p className="mt-3 text-[14.5px] text-white/75 max-w-[20rem] leading-relaxed">
-            Browse menus, fill your cart and track a courier - for the dopamine,
-            not the delivery. You pay nothing, every time.
+            Browse menus, enter a realistic checkout and track a courier - for the dopamine,
+            not the delivery. Every charge is simulated.
           </p>
 
           <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/12 backdrop-blur px-3.5 py-2 text-[12px] text-white/85 border border-white/15">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)]" />
-            Simulation only - no real orders, no payments
+            Simulation only - card UI is local and no real payment is sent
           </div>
 
           <button

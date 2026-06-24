@@ -108,7 +108,7 @@ export default function Account({
           </span>
         </button>
         <p className="text-[12px] text-[var(--color-ink-3)] mt-3 text-center leading-snug">
-          Phantom Eats is a simulation. No real orders, no payments, no accounts - your wallet stays full.
+          Phantom Eats is a simulation. Card fields are local UI only; no real orders, payment processing, or accounts.
         </p>
       </div>
     </div>

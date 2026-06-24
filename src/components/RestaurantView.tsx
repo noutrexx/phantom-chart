@@ -65,8 +65,8 @@ export default function RestaurantView({
           <FoodImage src={foodImg(restaurant.photo, restaurant.id + "-hero", 860, 560)} alt={restaurant.name} className="absolute inset-0" gradient={restaurant.gradient} />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
           <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
-            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold shadow-soft">Spend $0, save everything</span>
-            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold text-[var(--color-green-ink)] shadow-soft">Free delivery</span>
+            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold shadow-soft">Realistic checkout ritual</span>
+            <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-extrabold text-[var(--color-green-ink)] shadow-soft">Mock payment</span>
           </div>
         </div>
         <button onClick={onBack} className="absolute top-6 left-8 w-10 h-10 rounded-full bg-white grid place-items-center shadow-card active:scale-90 transition">
@@ -99,7 +99,7 @@ export default function RestaurantView({
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2">
           <InfoPill label={`${restaurant.etaMin}-${restaurant.etaMin + 7} min`} sub="Delivery" />
-          <InfoPill label="$0.00" sub="Fees" />
+          <InfoPill label="Mock pay" sub="Payment" />
           <InfoPill label={`${restaurant.distanceKm} km`} sub="Away" />
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function RestaurantView({
               <div className="px-5 flex items-end justify-between">
                 <div>
                   <h2 className="text-[20px] font-extrabold tracking-tight">Most ordered</h2>
-                  <p className="text-[12.5px] text-[var(--color-ink-3)]">High craving, zero checkout damage</p>
+                  <p className="text-[12.5px] text-[var(--color-ink-3)]">High craving, simulated checkout drama</p>
                 </div>
               </div>
               <div className="mt-3 flex gap-3 overflow-x-auto hide-scroll px-5 pb-1">

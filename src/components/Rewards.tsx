@@ -3,10 +3,10 @@ import type { Savings } from "../hooks/useSavings";
 import { feedback } from "../lib/feedback";
 import { Check, Trophy } from "./icons";
 
-const COUPONS = ["ZEROHERO", "NOBILL", "CARTZEN", "SKIP100", "GHOSTEATS"];
+const COUPONS = ["CRAVE20", "VOIDPAY", "CARTZEN", "AUTH15", "GHOSTEATS"];
 const BADGES = [
-  { label: "Zero Dollar Hero", need: 1 },
-  { label: "Cart Master", need: 3 },
+  { label: "Authorization Escape", need: 1 },
+  { label: "Cart Ritualist", need: 3 },
   { label: "Late Night Saver", need: 5 },
   { label: "Phantom Regular", need: 10 },
 ];
@@ -31,7 +31,7 @@ export default function Rewards({ savings, liveStreak }: { savings: Savings; liv
     <div className="h-full overflow-y-auto pb-24 bg-[var(--color-bg)]">
       <div className="sticky top-0 z-10 border-b border-[var(--color-line)] bg-[var(--color-bg)]/95 px-5 pt-3 pb-3 backdrop-blur">
         <h1 className="text-[24px] font-extrabold tracking-tight">Rewards</h1>
-        <p className="text-[13px] text-[var(--color-ink-2)] mt-0.5">Progress from orders you never paid for.</p>
+        <p className="text-[13px] text-[var(--color-ink-2)] mt-0.5">Progress from checkout rituals that never charge.</p>
       </div>
 
       <div className="px-5 pt-4">
@@ -55,7 +55,7 @@ export default function Rewards({ savings, liveStreak }: { savings: Savings; liv
             <div className="flex-1 min-w-0">
               <p className="text-[15px] font-extrabold tracking-tight">{missionDone ? "Daily mission complete" : "Daily mission"}</p>
               <p className="text-[12.5px] text-[var(--color-ink-2)] mt-0.5">
-                {missionDone ? "You completed the order ritual and kept the money." : "Place one phantom order today to extend your streak."}
+                {missionDone ? "You completed a realistic checkout and reversed the craving." : "Authorize one simulated order today to extend your streak."}
               </p>
             </div>
             <span className="rounded-full bg-[var(--color-soft)] px-2.5 py-1 text-[11px] font-extrabold tabular-nums">{liveStreak}x</span>
@@ -93,7 +93,7 @@ export default function Rewards({ savings, liveStreak }: { savings: Savings; liv
         <button onClick={spin} className="w-full rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] shadow-soft p-4 flex items-center justify-between active:scale-[0.99] transition">
           <div className="text-left">
             <p className="text-[14px] font-extrabold tracking-tight">{spun ? "Coupon refreshed" : "Fake coupon"}</p>
-            <p className="text-[12px] text-[var(--color-ink-2)]">A small hit of checkout theater.</p>
+            <p className="text-[12px] text-[var(--color-ink-2)]">A small hit of checkout theater without a processor.</p>
           </div>
           <span className="rounded-xl bg-[var(--color-ink)] text-white px-3.5 py-2 text-[13px] font-extrabold tracking-wider">{coupon}</span>
         </button>

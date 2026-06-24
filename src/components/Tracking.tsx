@@ -23,10 +23,10 @@ const EVENTS: Record<Outcome, { at: number; icon: string; text: string } | null>
 };
 
 const REVEAL_COPY: Record<Outcome, { emoji: string; title: string; line: string }> = {
-  normal: { emoji: "$0", title: "Nothing arrived.", line: "And somehow, you feel a little lighter." },
-  early: { emoji: "Fast", title: "Nothing arrived - early.", line: "Record time for a delivery that was never coming." },
-  lost: { emoji: "Void", title: "Nothing got lost on the way.", line: "Echo is still out there, carrying the void. Respect." },
-  gift: { emoji: "Gift", title: "Nothing arrived - plus a free dessert.", line: "Two things that do not exist. Twice the comfort." },
+  normal: { emoji: "VOID", title: "Authorization reversed.", line: "The order ritual completed, then the charge dissolved." },
+  early: { emoji: "FAST", title: "Reversal posted early.", line: "Record time for an authorization that never left the browser." },
+  lost: { emoji: "VOID", title: "Courier lost the charge.", line: "Echo is still out there carrying a receipt with no processor." },
+  gift: { emoji: "GIFT", title: "Bonus dessert voided too.", line: "The checkout felt premium, then every imaginary charge disappeared." },
 };
 
 export default function Tracking({
@@ -150,7 +150,7 @@ export default function Tracking({
         <div className="mt-4 grid grid-cols-3 gap-2">
           <TrackingMetric icon={<Clock size={15} />} label={`${minsLeft} min`} sub="ETA" />
           <TrackingMetric icon={<Pin size={15} />} label="0.0 mi" sub="Real distance" />
-          <TrackingMetric icon={<Star size={14} />} label="$0.00" sub="Total" />
+          <TrackingMetric icon={<Star size={14} />} label={`$${order.subtotal.toFixed(2)}`} sub="Items" />
         </div>
 
         <div className="mt-4 h-1.5 rounded-full bg-[var(--color-line)] overflow-hidden">
@@ -288,12 +288,11 @@ function Reveal({
           </div>
           <h2 className="mt-5 text-[25px] font-extrabold tracking-tight leading-tight">{copy.title}</h2>
           <p className="mt-2.5 text-[14.5px] text-[var(--color-ink-2)] leading-relaxed">
-            {copy.line} The craving from {restaurant.name} is gone - and you spent{" "}
-            <span className="text-[var(--color-green-ink)] font-bold">$0.00</span>.
+            {copy.line} The craving from {restaurant.name} is gone and the simulated charge never posted.
           </p>
 
           <div className="mt-6 card shadow-soft p-5 text-left">
-            <p className="text-[12px] text-[var(--color-ink-2)] font-medium">Saved this round</p>
+            <p className="text-[12px] text-[var(--color-ink-2)] font-medium">Avoided charge</p>
             <p className="text-[28px] font-extrabold text-[var(--color-green-ink)] tabular-nums leading-none mt-1">${saved.toFixed(2)}</p>
             <div className="divider my-3.5" />
             <div className="flex items-center justify-between text-[12.5px]">
@@ -310,8 +309,8 @@ function Reveal({
 
           <div className="mt-3 rounded-2xl bg-[var(--color-ink)] text-white p-4 text-left shadow-lift">
             <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/55">Achievement unlocked</p>
-            <p className="mt-1 text-[15px] font-extrabold">Zero Dollar Hero</p>
-            <p className="mt-1 text-[12.5px] text-white/70">You completed the full order ritual and kept every dollar.</p>
+            <p className="mt-1 text-[15px] font-extrabold">Authorization Escape</p>
+            <p className="mt-1 text-[12.5px] text-white/70">You entered the checkout tunnel and came back with your budget intact.</p>
           </div>
 
           <div className="mt-6 flex flex-col gap-2.5">
