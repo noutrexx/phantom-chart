@@ -1,39 +1,19 @@
-<div align="center">
-  <img src="assets/banner.png" alt="Phantom Eats banner" width="100%" />
+# Phantom Eats
 
-  <br />
-  <br />
+![Phantom Eats banner](assets/banner.png)
 
-  <strong>A dopamine-first food delivery simulation with realistic checkout UI, fake authorization, and reward loops.</strong>
+**A dopamine-first food delivery simulation with realistic checkout UI, fake authorization, and reward loops.**
 
-  <br />
-  <br />
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=06131f)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Payment](https://img.shields.io/badge/Payment-Simulated-FF6B35?style=for-the-badge)
+![Persistence](https://img.shields.io/badge/Persistence-localStorage-111315?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-111315?style=for-the-badge)
+[![CI](https://img.shields.io/github/actions/workflow/status/noutrexx/phantom-chart/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/noutrexx/phantom-chart/actions/workflows/ci.yml)
 
-  <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=06131f" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-
-  <br />
-
-  <img alt="Payment" src="https://img.shields.io/badge/Payment-Simulated-FF6B35?style=for-the-badge" />
-  <img alt="Persistence" src="https://img.shields.io/badge/Persistence-localStorage-111315?style=for-the-badge" />
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-111315?style=for-the-badge" />
-  <a href="https://github.com/noutrexx/phantom-chart/actions/workflows/ci.yml">
-    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/noutrexx/phantom-chart/ci.yml?branch=main&style=for-the-badge&label=CI" />
-  </a>
-
-  <br />
-  <br />
-
-  <a href="#overview">Overview</a> ·
-  <a href="#preview">Preview</a> ·
-  <a href="#features">Features</a> ·
-  <a href="#tech-stack">Tech Stack</a> ·
-  <a href="#flow">Flow</a> ·
-  <a href="#installation">Installation</a> ·
-  <a href="#license">License</a>
-</div>
+[Overview](#overview) · [Preview](#preview) · [Features](#features) · [Tech Stack](#tech-stack) · [Flow](#flow) · [Installation](#installation) · [License](#license)
 
 ---
 
@@ -49,23 +29,19 @@ The interface borrows familiar delivery-app patterns, then flips the outcome: th
 
 ## Preview
 
-<div align="center">
-  <img src="docs/screenshots/home.png" alt="Home screen" width="72%" />
-</div>
+### Home
 
-<br />
+![Home screen](docs/screenshots/home.png)
 
-<div align="center">
-  <img src="docs/screenshots/splash.png" alt="Splash screen" width="32%" />
-  <img src="docs/screenshots/restaurant.png" alt="Restaurant screen" width="32%" />
-  <img src="docs/screenshots/cart.png" alt="Checkout screen" width="32%" />
-</div>
+### Core screens
 
-<br />
+| Splash | Restaurant | Checkout |
+| --- | --- | --- |
+| ![Splash screen](docs/screenshots/splash.png) | ![Restaurant screen](docs/screenshots/restaurant.png) | ![Checkout screen](docs/screenshots/cart.png) |
 
-<div align="center">
-  <img src="docs/screenshots/rewards.png" alt="Rewards screen" width="32%" />
-</div>
+### Rewards
+
+![Rewards screen](docs/screenshots/rewards.png)
 
 ---
 
@@ -185,9 +161,3 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 ## Disclaimer
 
 Phantom Eats is a frontend simulation for product and UI experimentation. It is not affiliated with Uber Eats or any real delivery platform, and it does not perform real checkout, payment, account, courier, or restaurant operations.
-
----
-
-<div align="center">
-  Built with React, TypeScript, Vite, and Tailwind CSS.
-</div>
