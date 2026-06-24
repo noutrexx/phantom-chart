@@ -29,19 +29,7 @@ The interface borrows familiar delivery-app patterns, then flips the outcome: th
 
 ## Preview
 
-### Home
-
-![Home screen](docs/screenshots/home.png)
-
-### Core screens
-
-| Splash | Restaurant | Checkout |
-| --- | --- | --- |
-| ![Splash screen](docs/screenshots/splash.png) | ![Restaurant screen](docs/screenshots/restaurant.png) | ![Checkout screen](docs/screenshots/cart.png) |
-
-### Rewards
-
-![Rewards screen](docs/screenshots/rewards.png)
+![Phantom Eats product preview](docs/screenshots/showcase.png)
 
 ---
 
