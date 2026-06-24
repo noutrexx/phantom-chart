@@ -18,6 +18,7 @@
   <img alt="LocalStorage" src="https://img.shields.io/badge/Persistence-localStorage-111315?style=for-the-badge" />
   <img alt="Mobile first" src="https://img.shields.io/badge/UI-Mobile_First-06C167?style=for-the-badge" />
   <img alt="Simulation" src="https://img.shields.io/badge/Payment-Simulated-FF6B35?style=for-the-badge" />
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-111315?style=for-the-badge" />
 
   <br />
   <br />
@@ -28,7 +29,8 @@
   <a href="#tech-stack">Tech Stack</a> |
   <a href="#architecture">Architecture</a> |
   <a href="#installation">Installation</a> |
-  <a href="#roadmap">Roadmap</a>
+  <a href="#roadmap">Roadmap</a> |
+  <a href="#license">License</a>
 </div>
 
 ---
@@ -189,6 +191,12 @@ git diff --check
 - Optional mock user profiles with dietary preferences.
 - Expanded restaurant dataset and seasonal campaigns.
 - More detailed empty states for first-time users.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 

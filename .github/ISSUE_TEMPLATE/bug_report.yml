@@ -1,0 +1,39 @@
+﻿name: Bug report
+description: Report a reproducible bug in Phantom Eats
+title: "Bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is broken?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps.
+      placeholder: |
+        1. Open ...
+        2. Tap ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or video
+      description: Add visual evidence if this is a UI issue.
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / device
+      placeholder: Chrome on Windows, iPhone Safari, etc.
